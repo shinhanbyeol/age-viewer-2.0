@@ -1,4 +1,4 @@
-# AGE-Viewer-2.0 beta
+# AGE-Viewer-2.0 beta (WIP)
 
 ## Introduction
 this project is a viewer for Apache AGE,
