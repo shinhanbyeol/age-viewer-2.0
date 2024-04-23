@@ -17,4 +17,6 @@ It will be developed to support Mac OS X, Windows, and Linux.
 2. run `yarn install`
 3. run `yarn dev`
 
+## Code convention
+todo...
 
