@@ -1,0 +1,38 @@
+{
+  "private": true,
+  "name": "age-viewer-2.0",
+  "description": "AGE Viewer 2.0",
+  "version": "1.0.0",
+  "author": "Hanbyeol Shin <sinhanbyeol@gmail.com>",
+  "main": "app/background.js",
+  "scripts": {
+    "dev": "nextron",
+    "build": "nextron build",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "electron-serve": "^1.3.0",
+    "electron-store": "^8.2.0",
+    "pg": "^8.11.5",
+    "react-resizable-layout": "^0.7.2",
+    "sass": "^1.75.0"
+  },
+  "devDependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.2",
+    "@chakra-ui/theme-tools": "^2.1.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@types/node": "^20.11.16",
+    "@types/pg": "^8.11.5",
+    "@types/react": "^18.2.52",
+    "electron": "^29.3.0",
+    "electron-builder": "^24.13.3",
+    "framer-motion": "^11.0.28",
+    "next": "^13.5.6",
+    "nextron": "^8.15.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.4.5"
+  }
+}

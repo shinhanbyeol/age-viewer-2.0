@@ -1,0 +1,12 @@
+appId: com.age.viewer2
+productName: AGEViewer
+copyright: Copyright © 2024 shinhanbyeol
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+publish: null
