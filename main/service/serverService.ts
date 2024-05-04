@@ -1,3 +1,6 @@
+import { AGE_FLAVOR } from '../connections/types';
+import { Server_AGE } from './types';
+
 export default class ServerService {
   metaDb;
   _sqlitePromise;
@@ -23,7 +26,7 @@ export default class ServerService {
    */
   async getServers() {
     const sql = `SELECT * FROM tb_servers`;
-    const servers = await this._sqlitePromise(sql, []);
+    const servers = (await this._sqlitePromise(sql, [])) as Server_AGE[];
     return servers;
   }
 
@@ -34,10 +37,10 @@ export default class ServerService {
    * @memberof ServerService
    */
   async getServer(serverId) {
-    const server = await this._sqlitePromise(
+    const server = (await this._sqlitePromise(
       `SELECT * FROM tb_servers WHERE id = ?`,
       [serverId],
-    );
+    )) as Server_AGE;
     return server[0];
   }
 
@@ -46,13 +49,23 @@ export default class ServerService {
    * @returns
    * @memberof ServerService
    */
-  addServer = async (server) => {
-    const { name, host, port, database, user, password, serverType } = server;
+  addServer = async (server: {
+    name: string;
+    host: string;
+    port: number;
+    database: string;
+    user: string;
+    password: string;
+    serverType?: AGE_FLAVOR;
+    version?: string;
+  }) => {
+    const { name, host, port, database, user, password, serverType, version } =
+      server;
     const serverId = await this.metaDb.run(
       `INSERT INTO tb_servers 
-      (name, host, port, database, user, password, server_type ,created_at, updated_at)
+      (name, host, port, database, user, password, server_type, version, created_at, updated_at)
         VALUES 
-      (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         name,
         host,
@@ -60,7 +73,8 @@ export default class ServerService {
         database,
         user,
         password,
-        serverType ?? 'agensgraph',
+        serverType,
+        version,
         new Date().toISOString(),
         new Date().toISOString(),
       ],
@@ -96,10 +110,21 @@ export default class ServerService {
    * @memberof ServerService
    */
   updateServer = async (server) => {
-    const { id, name, host, port, user, password, serverType } = server;
+    const { id, name, host, port, user, password, serverType, version } =
+      server;
     await this.metaDb.run(
-      `UPDATE tb_servers SET name = ?, host = ?, port = ?, user = ?, password = ?, updated_at = ?  WHERE id = ?`,
-      [name, host, port, user, password, new Date().toISOString(), id],
+      `UPDATE tb_servers SET name = ?, host = ?, port = ?, user = ?, password = ?, server_type = ?, version = ?, updated_at = ?  WHERE id = ?`,
+      [
+        name,
+        host,
+        port,
+        user,
+        password,
+        serverType,
+        version,
+        new Date().toISOString(),
+        id,
+      ],
       (err) => {
         if (err) {
           throw err;
@@ -109,4 +134,3 @@ export default class ServerService {
   };
 }
 
-module.exports = ServerService;

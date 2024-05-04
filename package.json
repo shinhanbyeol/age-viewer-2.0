@@ -15,7 +15,9 @@
     "electron-store": "^8.2.0",
     "pg": "^8.11.5",
     "react-resizable-layout": "^0.7.2",
-    "sass": "^1.75.0"
+    "sass": "^1.75.0",
+    "sqlite3": "^5.1.7",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@chakra-ui/icons": "^2.1.1",

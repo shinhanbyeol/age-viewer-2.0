@@ -14,9 +14,9 @@ export default class CypherService {
     let cypherRow = targetItem.rows;
     if (this.type === 'age') {
       try {
-        cypherRow = this._convertRowToResult(targetItem);
+        cypherRow = this._convertAGERowToResult(targetItem);
       } catch (e) {
-        console.error('FixMe: _convertRowToResult error');
+        console.error('error: _convertAGERowToResult message: ' + e.message);
       }
     }
     result = {
@@ -40,7 +40,7 @@ export default class CypherService {
     return resultSet.command;
   }
 
-  _convertRowToResult(resultSet) {
+  _convertAGERowToResult(resultSet) {
     return resultSet.rows.map((row) => {
       let convetedObject = {};
       for (let k in row) {
@@ -97,4 +97,3 @@ export default class CypherService {
     };
   }
 }
-

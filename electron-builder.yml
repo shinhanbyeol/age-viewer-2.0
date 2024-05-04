@@ -4,6 +4,11 @@ copyright: Copyright © 2024 shinhanbyeol
 directories:
   output: dist
   buildResources: resources
+extraResources:
+  - from: './userData'
+    to: 'userData'
+    filter:
+      - '**/*'
 files:
   - from: .
     filter:
