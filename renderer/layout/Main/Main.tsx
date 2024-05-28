@@ -1,5 +1,9 @@
-import { Box } from "@chakra-ui/layout";
+import { Box } from '@chakra-ui/layout';
 
-export const Main = () => {
-  return <Box flex={1} minW={200}>Main</Box>;
+export const Main = ({ children }: { children?: React.ReactNode }) => {
+  return (
+    <Box flex={1} minW={200}>
+      {children}
+    </Box>
+  );
 };
