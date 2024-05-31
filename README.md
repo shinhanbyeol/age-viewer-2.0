@@ -39,3 +39,11 @@ It will be developed to support Mac OS X, Windows, and Linux.
 
 - One line of code is maximum 80 spaces </br>
   코드 한줄이 maximum 80칸
+
+## Contributors, and Contributions
+
+1. If you have a code that you want to contribute to, pull request
+   >  기여하고자 하는 코드가 있다면 pull request 하세요
+3. Please write a title and message for the pull request squash.
+   > pull request 할 때 squash를 위한 제목과 메시지를 작성하여 부탁드립니다.
+
