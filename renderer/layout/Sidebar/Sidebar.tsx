@@ -2,6 +2,7 @@ import { Box, Flex, Icon } from '@chakra-ui/react';
 import Styles from './Sidebar.module.scss';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import SidebarRenderer from '../../components/sidebar';
 
 //icons
 import { MdHome, MdBugReport } from 'react-icons/md';
@@ -9,7 +10,7 @@ import { MdHome, MdBugReport } from 'react-icons/md';
 interface SidebarProps {
   x: number;
 }
-export const Sidebar = ({ x }) => {
+export const Sidebar = ({ x }: SidebarProps) => {
   const [sidebar, setSidebar] = useState<string | number>(1);
   const router = useRouter();
 
@@ -89,7 +90,7 @@ export const Sidebar = ({ x }) => {
             <Icon as={MdBugReport} />
           </Box>
         </Flex>
-        <Box>sidebar contetns {sidebar}</Box>
+        <SidebarRenderer contents={sidebar} />
       </Flex>
     </Box>
   );
