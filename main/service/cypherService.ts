@@ -1,5 +1,7 @@
+import { AGE_FLAVOR } from './types';
+
 export default class CypherService {
-  type;
+  type: AGE_FLAVOR;
   constructor(type) {
     this.type = type;
   }
@@ -12,11 +14,18 @@ export default class CypherService {
     }
 
     let cypherRow = targetItem.rows;
-    if (this.type === 'age') {
+    if (this.type === AGE_FLAVOR.AGE) {
       try {
         cypherRow = this._convertAGERowToResult(targetItem);
       } catch (e) {
         console.error('error: _convertAGERowToResult message: ' + e.message);
+      }
+    }
+    if (this.type === AGE_FLAVOR.AGENSGRAPH) {
+      try {
+        cypherRow = this._convertAgensRowToResult(targetItem);
+      } catch (e) {
+        console.error('error: _convertAgensRowToResult message: ' + e.message);
       }
     }
     result = {
@@ -41,6 +50,29 @@ export default class CypherService {
   }
 
   _convertAGERowToResult(resultSet) {
+    return resultSet.rows.map((row) => {
+      let convetedObject = {};
+      for (let k in row) {
+        if (row[k]) {
+          let typeName = row[k].constructor.name;
+          if (typeName === 'Path') {
+            convetedObject[k] = this.convertPath(row[k]);
+          } else if (typeName === 'Vertex') {
+            convetedObject[k] = this.convertVertex(row[k]);
+          } else if (typeName === 'Edge') {
+            convetedObject[k] = this.convertEdge(row[k]);
+          } else {
+            convetedObject[k] = row[k];
+          }
+        } else {
+          convetedObject[k] = null;
+        }
+      }
+      return convetedObject;
+    });
+  }
+
+  _convertAgensRowToResult(resultSet) {
     return resultSet.rows.map((row) => {
       let convetedObject = {};
       for (let k in row) {

@@ -1,8 +1,9 @@
-enum AGE_FLAVOR {
+export enum AGE_FLAVOR {
+  /** Apace AGE [https://age.apache.org/] */
   AGE = 'AGE',
-  BLUE = 'BLUE',
+  /** AgensGraph [https://bitnine.net/agensgraph/] */
+  AGENSGRAPH = 'AGENSGRAPH',
 }
-
 export interface Server_AGE {
   id: string;
   name: string;

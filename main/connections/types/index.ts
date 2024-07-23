@@ -1,8 +1,10 @@
 import { PoolClient } from 'pg';
 
 export enum AGE_FLAVOR {
+  /** Apace AGE [https://age.apache.org/] */
   AGE = 'AGE',
-  BLUE = 'BLUE',
+  /** AgensGraph [https://bitnine.net/agensgraph/] */
+  AGENSGRAPH = 'AGENSGRAPH',
 }
 
 export interface Config_AGE {

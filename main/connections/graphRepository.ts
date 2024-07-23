@@ -81,8 +81,10 @@ class ConnectionPool {
         `LOAD 'age'; SET search_path = ag_catalog, "$user", public;`,
       );
     }
-    if (scheme && this.type === AGE_FLAVOR.BLUE) {
-      // TODO: For AGE BLUE
+    if (scheme && this.type === AGE_FLAVOR.AGENSGRAPH) {
+      await client.query(
+        `set graph_path = ${scheme}; SET search_path = ag_catalog, "$user", public;`,
+      );
     }
 
     return client;
@@ -106,7 +108,7 @@ class ConnectionPool {
    * propertyMeta: { [key: string]: string }
    * }
    */
-  async getMetadata(graph) {
+  async getMetadata(graph: string) {
     const client = await this.getConnection(graph);
     let nodes = null;
     let edges = null;
@@ -147,7 +149,7 @@ class ConnectionPool {
    * @param {string} query
    * @param {string} graph
    */
-  async excuteQuery(query, graph) {
+  async excuteQuery(query: string, graph: string) {
     const client = await this.getConnection(graph);
     let result = null;
     try {
@@ -166,7 +168,7 @@ class ConnectionPool {
    * @param {string} query
    * @param {Array<any>} params
    */
-  async excuteQueryWithParams(query, params) {
+  async excuteQueryWithParams(query: string, params: Array<any>) {
     const client = await this.getConnection();
     let res = null;
     try {
@@ -186,7 +188,7 @@ class ConnectionPool {
    * @param {string[]} params
    * @param {string} graph
    */
-  async excuteCypherWithParams(query, params, graph) {
+  async excuteCypherWithParams(query: string, params: string[], graph: string) {
     const client = await this.getConnection(graph);
     let res = null;
     try {

@@ -1,10 +1,5 @@
 import ageSqls, { type Sqls } from './sql/AGE/sqls';
-// import { AGE_FLAVOR } from './types';
-
-enum AGE_FLAVOR {
-  AGE = 'AGE',
-  BLUE = 'BLUE',
-}
+import { AGE_FLAVOR } from './types';
 
 /**
  * @description Get SQL Query
@@ -25,7 +20,7 @@ function getQuery(name: keyof Sqls, type: AGE_FLAVOR, version: string) {
   switch (type) {
     case AGE_FLAVOR.AGE:
       return ageSqls[version][name];
-    case AGE_FLAVOR.BLUE:
+    case AGE_FLAVOR.AGENSGRAPH:
       // todo: add blue sqls
       return '';
     default:
