@@ -34,9 +34,7 @@ export enum DEBUGGER {
 
 export const DEBUGGER_SAMPLE_PARAMS = {
   getServers: null,
-  getServer: {
-    serverId: '-1',
-  },
+  getServer: 1,
   addServer: {
     name: 'testsserver',
     host: '127.0.0.1',
@@ -77,24 +75,40 @@ export const DEBUGGER_SAMPLE_PARAMS = {
   excuteQuery: {
     connectionId: '-1',
     query: 'select 1234, 5432',
-    graph: 'age'
+    graph: 'age',
   },
   writeFile: {
     fileName: 'writefile-debugger',
     fileType: 'cache',
     fileExt: 'txt',
-    fileData: 'test by debugger page',    
+    fileData: 'test by debugger page',
   },
   readFile: {
     fileName: 'writefile-debugger',
     fileType: 'cache',
     fileExt: 'txt',
-  }
+  },
+};
+
+export const DEBUGGER_PARAM_TYPE = {
+  getServers: 'null',
+  getServer: 'number',
+  addServer: 'object',
+  updateServer: 'object',
+  removeServer: 'object',
+  getMetadata: 'object',
+  getConnections: 'null',
+  createConnnection: 'object',
+  checkConnection: 'object',
+  disconnectServer: 'object',
+  excuteQuery: 'object',
+  writeFile: 'object',
+  readFile: 'object',
 };
 
 export const DEBUGGER_DESCRIPTION = {
-  getServer: 'Get Server',
-  addServer: 'Add Server',
+  getServer: 'Get Server: this will return server by serverId',
+  addServer: 'Add Server: this will add server',
   updateServer: 'Update Server',
   removeServer: 'Remove Server',
   getDatabases: 'Get Databases',

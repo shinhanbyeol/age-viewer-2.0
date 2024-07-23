@@ -4,11 +4,14 @@ import { useDebugStore } from '../../stores';
 import {
   DEBUGGERLIST,
   DEBUGGER_SAMPLE_PARAMS,
+  DEBUGGER_DESCRIPTION,
+  DEBUGGER_PARAM_TYPE,
 } from '../../constants/debugFeat';
 
 const IpcDebugger = () => {
   const { tester, setTester, setResult } = useDebugStore();
   const [param, setParam] = useState<any>(null);
+  const [parmField, setParamField] = useState<string>(null);
 
   const handleExecuteTest = () => {
     console.log('🚀' + tester + ': request', param);
@@ -23,11 +26,23 @@ const IpcDebugger = () => {
   };
 
   const handleOnChangeParams = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setParam(JSON.parse(e.target.value));
+    setParamField(e.target.value);
+    // setParam(JSON.parse(e.target.value));
   };
 
   useEffect(() => {
+    try {
+      setParam(JSON.parse(parmField));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [parmField]);
+
+  useEffect(() => {
     setParam(DEBUGGER_SAMPLE_PARAMS[tester] ?? '');
+    setParamField(
+      JSON.stringify(DEBUGGER_SAMPLE_PARAMS[tester] ?? '', null, 2),
+    );
   }, [tester]);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -51,13 +66,25 @@ const IpcDebugger = () => {
           <option>{item}</option>
         ))}
       </Select>
-      <Text fontSize={'2xl'}>Name : {tester}</Text>
-      <Text fontSize={'2xl'}>Params : </Text>
+      <Text fontSize={'2xl'} marginTop={'3rem'}>
+        Feature & description:
+      </Text>
+      <Text fontSize={'1xl'} marginLeft={'1rem'}>
+        {DEBUGGER_DESCRIPTION[tester]}
+      </Text>
+      <Text fontSize={'2xl'} marginTop={'3rem'}>
+        Params:
+      </Text>
+      <Text fontSize={'1xl'} marginLeft={'1rem'} marginBottom={'1rem'}>
+        Param type: {DEBUGGER_PARAM_TYPE[tester]}
+      </Text>
       <Textarea
         style={{
           height: '18.75rem',
+          backgroundColor: '#fff',
+          border: '1px solid #ccc',
         }}
-        value={param ? JSON.stringify(param, null, 2) : ''}
+        value={parmField}
         defaultValue={param ? JSON.stringify(param, null, 2) : ''}
         onChange={handleOnChangeParams}
       />

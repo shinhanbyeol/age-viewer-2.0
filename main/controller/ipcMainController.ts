@@ -31,7 +31,7 @@ class IpcMainController {
 
     /**
      * @description Get Server
-     * @param {String} payload.serverId
+     * @param {String} payload
      * @returns server
      */
     ipcMain.handle('getServer', async (event, payload) => {
@@ -229,7 +229,7 @@ class IpcMainController {
     });
 
     /**
-     * @description Read File at cache folder 
+     * @description Read File at cache folder
      *              Load the file into different paths depending on the file type.
      *              kor: 캐시 폴더에서 파일 읽기
      *              kor: 파일 type 에 따라 각기 다른경로에 파일을 불러들인다.
