@@ -2,7 +2,7 @@
 
 ## Introduction
 
-this project is a viewer for Apache AGE,
+this project is a viewer for Apache AGE, AgensGraph
 AGE is a graph database that is postgresql extension, and this viewer is a desktop application that can be used to visualize the graph data stored in AGE.
 
 It will be developed to support Mac OS X, Windows, and Linux.
