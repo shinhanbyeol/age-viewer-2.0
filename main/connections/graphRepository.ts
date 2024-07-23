@@ -3,6 +3,7 @@ import { getQuery } from './ageFlavorManager';
 import { AGE_FLAVOR } from './types';
 
 const AGE_LATEST_VERSION = process.env.AGE_LATEST_VERSION;
+const AGENSGRAPH_LATEST_VERSION = process.env.AGENSGRAPH_LATEST_VERSION;
 
 class ConnectionPool {
   config;
@@ -14,18 +15,29 @@ class ConnectionPool {
     this.pool = new Pool(config);
     this.config = config;
 
-    if (type == null)
+    if (type == null) {
       console.warn('Connection Type is not defined. set AGE as default.');
+    }
     this.type = type || AGE_FLAVOR.AGE;
 
-    if (this.version == null)
-      console.warn('AGE Version is not defined. set 1.5.0 as default.');
-    this.type = version || AGE_LATEST_VERSION;
+    if (this.version == null) {
+      if (type === AGE_FLAVOR.AGE) {
+        console.warn('AGE Version is not defined. set latest as default.');
+        this.version = version || AGE_LATEST_VERSION;
+      }
+      if (type === AGE_FLAVOR.AGENSGRAPH) {
+        console.warn(
+          'AgensGraph Version is not defined. set latest as default.',
+        );
+        this.version = version || '2.14';
+      }
+    }
 
     this.sqls = {
       metaNode: getQuery('nodes', this.type, this.version),
       metaEdge: getQuery('edges', this.type, this.version),
       metaProperty: getQuery('properties', this.type, this.version),
+      graphs: getQuery('graphs', this.type, this.version),
     };
 
     // error handling
@@ -180,6 +192,25 @@ class ConnectionPool {
       return error;
     }
     return res;
+  }
+
+  /**
+   * @description Get graph paths
+   * @returns {Array<string>}
+   */
+  async getGraphPaths() {
+    const client = await this.getConnection();
+    let res = null;
+    try {
+      res = await client.query(this.sqls.graphs);
+      this.release(client);
+    } catch (error) {
+      console.log(error);
+      this.release(client);
+      return error;
+    }
+    console.log(res.rows);
+    return res.rows.map((row) => row.nspname);
   }
 
   /**

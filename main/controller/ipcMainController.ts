@@ -4,6 +4,7 @@ import ServerService from '../service/serverService';
 import CypherService from '../service/cypherService';
 import fs from 'fs';
 import path from 'path';
+import { AGE_FLAVOR } from '../connections/types';
 
 class IpcMainController {
   appData;
@@ -119,17 +120,25 @@ class IpcMainController {
      * @description Create Connection
      *              kor: 데이터베이스 커넥션 생성
      * @param {
+     * id: string,
+     * severType: 'AGE' | 'AGENSGRAPH',
      * host: string,
      * port: number,
      * user: string,
      * password: string,
      * database: string
      * } payload
-     * @returns {Promise}
+     * @returns {
+     * sessionId: string | null,
+     * success: boolean,
+     * error: boolean,
+     * message: string,
+     * stack: string | null
+     * } testResult
      */
     ipcMain.handle('createConnnection', async (event, payload) => {
       const serverService = new ServerService(this.appData);
-      const server = await serverService.getServer(payload.serverId);
+      const server = await serverService.getServer(payload.id);
       const config = {
         host: server.host,
         port: server.port,
@@ -137,25 +146,25 @@ class IpcMainController {
         password: server.password,
         database: server.database,
       };
-      const serverType = server.server_type;
+
       const version = server.version;
-      const connection = await this.connectionsMap.addConnection(
+      const session = await this.connectionsMap.addConnection(
         config,
-        serverType,
+        server.serverType === 'AGE' ? AGE_FLAVOR.AGE : AGE_FLAVOR.AGENSGRAPH,
         version,
       );
-      return connection;
+      return session;
     });
 
     /**
      * @description Check Connection
      *              kor: 커넥션 연결상태 확인
-     * @param {String} payload.connectionId
-     * @returns {Promise} {connectionId, isConnected}
+     * @param {String} sessionId
+     * @returns {Promise} {sessionId, isConnected}
      */
     ipcMain.handle('checkConnection', async (event, payload) => {
       const connection = await this.connectionsMap.getConnection(
-        payload.connectionId,
+        payload,
       );
       const test = (await connection?.testConnection()) ?? {
         success: false,
@@ -164,11 +173,11 @@ class IpcMainController {
       // remove connection if connection is not connected
       if (test.error) {
         await this.connectionsMap.removeConnectionBySessionId(
-          payload.connectionId,
+          payload,
         );
       }
       return {
-        connectionId: payload.connectionId,
+        sessionId: payload,
         isConnected: Boolean(test.success),
       };
     });
@@ -176,27 +185,38 @@ class IpcMainController {
     /**
      * @description Disconnect Server
      *              kor: 연결 해제
-     * @param {String} payload.connectionId
+     * @param {String} sessionId
      * @returns {Promise}
      */
     ipcMain.handle('disconnectServer', async (event, payload) => {
       const connection = await this.connectionsMap.removeConnectionBySessionId(
-        payload.connectionId,
+        payload,
       );
       return connection;
     });
 
     /**
+     * @description get graph path list (schema list)
+     *              kor: 그래프 경로 리스트 가져오기 (스키마 리스트)
+     * @param {String} sessionId
+     */
+    ipcMain.handle('getGraphs', async (event, payload) => {
+      const connection = await this.connectionsMap.getConnection(payload);
+      const graphPathList = await connection.getGraphPaths();
+      return graphPathList;
+    });
+
+    /**
      * @description Excute Query
      *              kor: 쿼리 실행
-     * @param {String} payload.connectionId
+     * @param {String} payload.sessionId
      * @param {String} payload.query
      * @param {string} payload.graph graph is non required
      * @returns {Promise}
      */
     ipcMain.handle('excuteQuery', async (event, payload) => {
       const connection = await this.connectionsMap.getConnection(
-        payload.connectionId,
+        payload.sessionId,
       );
       const cypherService = new CypherService(connection);
       const result = await connection.excuteQuery(payload.query, payload.graph);

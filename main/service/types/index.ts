@@ -4,7 +4,8 @@ export enum AGE_FLAVOR {
   /** AgensGraph [https://bitnine.net/agensgraph/] */
   AGENSGRAPH = 'AGENSGRAPH',
 }
-export interface Server_AGE {
+// underscore prefix meaning sqlite return type
+export interface _Server {
   id: string;
   name: string;
   host: string;
@@ -13,5 +14,17 @@ export interface Server_AGE {
   user: string;
   password: string;
   server_type: AGE_FLAVOR;
+  version: string;
+}
+
+export interface Server {
+  id: string;
+  name: string;
+  host: string;
+  port: number;
+  database: string;
+  user: string;
+  password: string;
+  serverType: AGE_FLAVOR;
   version: string;
 }

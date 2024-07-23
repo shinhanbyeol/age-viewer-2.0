@@ -1,4 +1,4 @@
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import GraphRepository from './graphRepository';
 import { AGE_FLAVOR, Config_AGE, ConnectionPool } from './types';
 
@@ -19,7 +19,13 @@ export default class ConnectionMaps {
     config: Config_AGE,
     serverType: AGE_FLAVOR,
     version: string,
-  ) {
+  ): Promise<{
+    sessionId: string | null;
+    success: boolean;
+    error: boolean;
+    message: string;
+    stack: string | null;
+  }> {
     let connection = null;
     switch (serverType) {
       case AGE_FLAVOR.AGE:
@@ -29,16 +35,23 @@ export default class ConnectionMaps {
         connection = new GraphRepository(config, serverType, version);
         break;
       default:
+        console.error('Server Type is' + serverType);
         throw Error('Server Type is not defined');
     }
-    const sessionId = uuid.v4();
+    const sessionId = uuidv4();
     // connection test
     const test = await connection.testConnection();
     if (test.success) {
       this.connections.set(sessionId, connection);
-      return sessionId;
+      return {
+        sessionId: sessionId,
+        ...test,
+      };
     } else {
-      return test;
+      return {
+        sessionId: null,
+        ...test,
+      };
     }
   }
 

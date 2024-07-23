@@ -18,10 +18,11 @@
     "react-resizable-layout": "^0.7.2",
     "sass": "^1.75.0",
     "sqlite3": "^5.1.7",
-    "uuid": "^9.0.1",
+    "uuid": "^10.0.0",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@types/uuid": "^10.0.0",
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
     "@chakra-ui/theme-tools": "^2.1.2",

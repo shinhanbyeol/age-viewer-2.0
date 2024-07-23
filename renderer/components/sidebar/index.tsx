@@ -1,10 +1,11 @@
 import React from 'react';
-import IpcDebugger from './Debugger';
+import IpcDebugger from './debugger/Debugger';
+import HomeBar from './home/HomeBar';
 
 const SidebarRenderer = ({ contents }: { contents: string | number }) => {
   switch (contents) {
     case 'home':
-      return <>Sidebar: {contents}</>;
+      return <HomeBar />;
     case 'debug':
       return <IpcDebugger />;
     default:

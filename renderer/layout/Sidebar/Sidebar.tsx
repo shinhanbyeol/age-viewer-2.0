@@ -90,7 +90,9 @@ export const Sidebar = ({ x }: SidebarProps) => {
             <Icon as={MdBugReport} />
           </Box>
         </Flex>
-        <SidebarRenderer contents={sidebar} />
+        <Box overflowY={'auto'} width={'100%'} height={'100vh'}>
+          <SidebarRenderer contents={sidebar} />
+        </Box>
       </Flex>
     </Box>
   );

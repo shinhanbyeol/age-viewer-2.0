@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Select, Button, Text, Textarea } from '@chakra-ui/react';
-import { useDebugStore } from '../../stores';
+import { useDebugStore } from '../../../stores';
 import {
   DEBUGGERLIST,
   DEBUGGER_SAMPLE_PARAMS,
   DEBUGGER_DESCRIPTION,
   DEBUGGER_PARAM_TYPE,
-} from '../../constants/debugFeat';
+} from '../../../constants/debugFeat';
 
 const IpcDebugger = () => {
   const { tester, setTester, setResult } = useDebugStore();
@@ -55,9 +55,8 @@ const IpcDebugger = () => {
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
-        margin: '10px',
-        padding: '10px',
         backgroundColor: '#f5f5f5',
+        padding: '1rem',
       }}
     >
       <Text fontSize={'4xl'}>AGE-Viewer-2.0 IPC Debgger</Text>

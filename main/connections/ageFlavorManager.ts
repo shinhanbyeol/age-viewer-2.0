@@ -1,4 +1,5 @@
 import ageSqls, { type Sqls } from './sql/AGE/sqls';
+import agensgraphSqls from './sql/AGENSGRAPH/sqls';
 import { AGE_FLAVOR } from './types';
 
 /**
@@ -21,8 +22,7 @@ function getQuery(name: keyof Sqls, type: AGE_FLAVOR, version: string) {
     case AGE_FLAVOR.AGE:
       return ageSqls[version][name];
     case AGE_FLAVOR.AGENSGRAPH:
-      // todo: add blue sqls
-      return '';
+      return agensgraphSqls[version][name];
     default:
       return '';
   }

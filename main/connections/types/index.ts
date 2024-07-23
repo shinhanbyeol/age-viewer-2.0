@@ -44,6 +44,7 @@ export declare class ConnectionPool {
     edgeMeta: any;
     propertyMeta: any;
   };
+  getGraphPaths: () => Promise<string[]>;
   excuteQuery(query: string, graph: string): Promise<any>;
   excuteQueryWithParams(query: string, params: any): Promise<any>;
   excuteCypherWithParams(query: string, params: any): Promise<any>;
