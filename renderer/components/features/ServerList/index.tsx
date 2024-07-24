@@ -12,7 +12,7 @@ interface ServerListProps {
 const ServerList = ({ servers }: ServerListProps) => {
   return (
     <div className={Styels.Root}>
-      <Accordion allowMultiple allowToggle>
+      <Accordion allowMultiple>
         {servers.map((server) => (
           <Server key={server.id} server={server} />
         ))}

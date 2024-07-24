@@ -1,4 +1,4 @@
-const initSql = `
+const tb_servers = `
 CREATE TABLE IF NOT EXISTS tb_servers (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   server_type TEXT,
@@ -14,4 +14,19 @@ CREATE TABLE IF NOT EXISTS tb_servers (
 );
 `;
 
-export default initSql;
+const tb_workspaces = `
+CREATE TABLE IF NOT EXISTS tb_workspaces (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  server_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  sql_path TEXT,
+  json_path TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+`;
+
+const initSqls = [tb_servers, tb_workspaces];
+
+export const initTableCount = initSqls.length + 1;
+export default initSqls;

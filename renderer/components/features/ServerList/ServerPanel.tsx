@@ -1,4 +1,4 @@
-import { Accordion, CircularProgress } from '@chakra-ui/react';
+import { Accordion, ButtonSpinner, CircularProgress } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
 import { createConnectionResponse, ServerResponse } from '../../../types';
 import { useServerOfSessionStore } from '../../../stores/serverofSessionStore';
@@ -56,10 +56,10 @@ const ServerPanel = ({ server }) => {
 
   return (
     <>
-      {isConnecting && <CircularProgress isIndeterminate />}
+      {isConnecting && <ButtonSpinner />}
       {errorMessage && isError && <p>{errorMessage}</p>}
       {/* {sessionId && <p>Session ID: {sessionId}</p>} */}
-      <Accordion allowMultiple allowToggle>
+      <Accordion allowMultiple pl={4}>
         {graphPaths.map((gpath) => (
           <Graph graphPathName={gpath} />
         ))}

@@ -81,6 +81,7 @@ export default class ServerService {
       ],
       (err) => {
         if (err) {
+          console.error(err);
           throw err;
         }
       },

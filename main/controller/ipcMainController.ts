@@ -35,7 +35,7 @@ class IpcMainController {
      * @param {String} payload
      * @returns server
      */
-    ipcMain.handle('getServer', async (event, payload) => {
+    ipcMain.handle('getServer', async (event, payload: number) => {
       console.log('getServer', payload);
       const serverService = new ServerService(this.appData);
       const server = await serverService.getServer(payload);
@@ -51,16 +51,30 @@ class IpcMainController {
      * database: string,
      * user: string,
      * password: string,
-     * serverType?: AGE_FLAVOR
+     * serverType: AGE_FLAVOR
      * } payload
      * @returns {string} serverId
      */
-    ipcMain.handle('addServer', async (event, payload) => {
-      console.log('addServer', payload);
-      const serverService = new ServerService(this.appData);
-      const serverId = await serverService.addServer(payload);
-      return serverId;
-    });
+    ipcMain.handle(
+      'addServer',
+      async (
+        event,
+        payload: {
+          name: string;
+          host: string;
+          port: number;
+          database: string;
+          user: string;
+          password: string;
+          serverType: AGE_FLAVOR;
+          version: string;
+        },
+      ) => {
+        const serverService = new ServerService(this.appData);
+        const serverId = await serverService.addServer(payload);
+        return serverId;
+      },
+    );
 
     /**
      * @description Update Server
@@ -74,19 +88,34 @@ class IpcMainController {
      * serverType?: AGE_FLAVOR
      * } payload
      */
-    ipcMain.handle('updateServer', async (event, payload) => {
-      const serverService = new ServerService(this.appData);
-      const serverId = await serverService.updateServer(payload);
-      return serverId;
-    });
+    ipcMain.handle(
+      'updateServer',
+      async (
+        event,
+        payload: {
+          id: number;
+          name: string;
+          host: string;
+          port: number;
+          database: string;
+          user: string;
+          password: string;
+          serverType: AGE_FLAVOR;
+          version: string;
+        },
+      ) => {
+        const serverService = new ServerService(this.appData);
+        const serverId = await serverService.updateServer(payload);
+        return serverId;
+      },
+    );
 
     /**
      * @description Remove Server
-     * @param {String} payload.serverId
+     * @param {String} payload
      * @returns {string} serverId
      */
-    ipcMain.handle('removeServer', async (event, payload) => {
-      console.log('removeServer', payload);
+    ipcMain.handle('removeServer', async (event, payload: string) => {
       const serverService = new ServerService(this.appData);
       const serverId = await serverService.removeServer(payload);
       return serverId;
@@ -163,18 +192,14 @@ class IpcMainController {
      * @returns {Promise} {sessionId, isConnected}
      */
     ipcMain.handle('checkConnection', async (event, payload) => {
-      const connection = await this.connectionsMap.getConnection(
-        payload,
-      );
+      const connection = await this.connectionsMap.getConnection(payload);
       const test = (await connection?.testConnection()) ?? {
         success: false,
         error: true,
       };
       // remove connection if connection is not connected
       if (test.error) {
-        await this.connectionsMap.removeConnectionBySessionId(
-          payload,
-        );
+        await this.connectionsMap.removeConnectionBySessionId(payload);
       }
       return {
         sessionId: payload,
@@ -224,9 +249,16 @@ class IpcMainController {
     });
 
     /**
-     * @description Excute Query with Params
+     * @description create workspace
+     * @param payload.serverId
+     * @param payload.name
+     * @param payload.graph
+     */
+
+    /**
+     * @description Write File
      *              Save the file to different paths depending on the file type.
-     *              kor: 파라미터를 포함한 쿼리 실행
+     *              kor: 파일 쓰기
      *              kor: 파일 type 에 따라 각기 다른경로에 파일을 저장한다.
      * @param payload.fileName
      * @param payload.fileType

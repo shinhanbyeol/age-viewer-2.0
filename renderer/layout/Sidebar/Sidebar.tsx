@@ -11,7 +11,7 @@ interface SidebarProps {
   x: number;
 }
 export const Sidebar = ({ x }: SidebarProps) => {
-  const [sidebar, setSidebar] = useState<string | number>(1);
+  const [sidebar, setSidebar] = useState<string | number>('home');
   const router = useRouter();
 
   return (

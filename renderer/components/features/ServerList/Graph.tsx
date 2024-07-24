@@ -3,27 +3,34 @@ import {
   AccordionItem,
   AccordionButton,
   AccordionPanel,
+  Button,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
+import { PiGraph } from 'react-icons/pi';
 
 const Graph = ({ graphPathName }: { graphPathName: string }) => {
   return (
     <AccordionItem>
       {({ isExpanded }) => (
         <>
-          <AccordionButton width={'100%'} textAlign={'left'} h={'1.5em'}>
+          <AccordionButton
+            as={Button}
+            width={'100%'}
+            h={'1.5em'}
+            leftIcon={<PiGraph />}
+            rightIcon={<ChevronDownIcon />}
+            justifyContent={'space-between'}
+            textOverflow={'ellipsis'}
+          >
             {graphPathName}
           </AccordionButton>
           {isExpanded && (
-            <AccordionPanel pb={4} pl={8}>
+            <AccordionPanel pt={0} pl={8}>
               <div>
-                <button onClick={() => alert('todo works')}>+ new Sql</button>
-                <br />
-                <button onClick={() => alert('todo works')}>node</button>
-                <br />
-                <button onClick={() => alert('todo works')}>edge</button>
-                <br />
-                <button onClick={() => alert('todo works')}>property</button>
+                <p>test.sql</p>
+                <p>graph.sql</p>
+                <p>my-agens.slq</p>
+                <p>fds.sql</p>
               </div>
             </AccordionPanel>
           )}
