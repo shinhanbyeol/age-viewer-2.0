@@ -2,6 +2,7 @@ import { ipcMain } from 'electron';
 import ConnectionsMap from '../connections/connectionMaps';
 import ServerService from '../service/serverService';
 import CypherService from '../service/cypherService';
+import WorkspaceService from '../service/workspaceService';
 import fs from 'fs';
 import path from 'path';
 import { AGE_FLAVOR } from '../connections/types';
@@ -36,7 +37,6 @@ class IpcMainController {
      * @returns server
      */
     ipcMain.handle('getServer', async (event, payload: number) => {
-      console.log('getServer', payload);
       const serverService = new ServerService(this.appData);
       const server = await serverService.getServer(payload);
       return server;
@@ -254,6 +254,47 @@ class IpcMainController {
      * @param payload.name
      * @param payload.graph
      */
+    ipcMain.handle(
+      'createWorkspace',
+      async (
+        event,
+        payload: {
+          serverId: number;
+          name: string;
+          graph: string;
+        },
+      ) => {
+        const workspaceService = new WorkspaceService(this.appData);
+        const workspaceId = await workspaceService.addWorkspace(
+          payload,
+          this.cachePath,
+        );
+        return workspaceId;
+      },
+    );
+
+    /**
+     * @description get workspaces
+     * @param payload.serverId
+     * @param payload.graph
+     */
+    ipcMain.handle(
+      'getWorkspaces',
+      async (
+        event,
+        payload: {
+          serverId: number;
+          graph: string;
+        },
+      ) => {
+        const workspaceService = new WorkspaceService(this.appData);
+        const workspaces = await workspaceService.getWorkspaces(
+          payload.serverId,
+          payload.graph,
+        );
+        return workspaces;
+      },
+    );
 
     /**
      * @description Write File

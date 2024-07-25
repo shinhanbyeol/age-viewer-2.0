@@ -31,3 +31,15 @@ export interface createConnectionResponse {
   message: string;
   stack: string | null;
 }
+
+// get workspace list response
+export interface WorkspaceResponse {
+  id: number;
+  serverId: number;
+  graph: string;
+  name: string;
+  sqlPath: string;
+  jsonPath: string;
+  created_at: string;
+  updated_at: string;
+}

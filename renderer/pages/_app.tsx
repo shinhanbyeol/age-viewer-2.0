@@ -10,6 +10,8 @@ import { Sidebar } from '../layout/Sidebar/Sidebar';
 import { Divider } from '@chakra-ui/react';
 // hook
 import { useResizable } from 'react-resizable-layout';
+// css
+import './common.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { position, separatorProps } = useResizable({

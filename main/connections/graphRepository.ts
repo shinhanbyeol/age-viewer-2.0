@@ -209,7 +209,6 @@ class ConnectionPool {
       this.release(client);
       return error;
     }
-    console.log(res.rows);
     return res.rows.map((row) => row.nspname);
   }
 

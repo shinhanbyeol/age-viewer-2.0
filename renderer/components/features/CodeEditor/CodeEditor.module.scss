@@ -1,0 +1,34 @@
+.Root {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  padding: 1rem;
+  overflow: hidden;
+  .Editor {
+    position: relative;
+    width: 100%;
+    height: 3rem;
+    border-radius: 24px;
+    border: solid 1px #303030;
+    cursor: text;
+    overflow: hidden;
+    overflow-y: auto;
+    // code mirror height: 100%;
+    > div {
+      height: 100%;
+    }
+    // chrome scroll bar style
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+.Expand {
+  height: 50%;
+  .Editor {
+    flex: 1;
+  }
+}

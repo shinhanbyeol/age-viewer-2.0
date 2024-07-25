@@ -11,6 +11,7 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "@uiw/react-codemirror": "^4.23.0",
     "chakra-ui-contextmenu": "^1.0.5",
     "electron-serve": "^1.3.0",
     "electron-store": "^8.2.0",

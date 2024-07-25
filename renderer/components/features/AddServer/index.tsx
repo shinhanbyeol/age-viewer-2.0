@@ -96,7 +96,7 @@ const AddServerModal = ({ onClose }: { onClose: () => void }) => {
                 <Field name="serverType" placeholder="Server Type">
                   {(field, form) => {
                     return (
-                      <FormControl display={'flex'} alignItems={'row'}>
+                      <FormControl display={'flex'} alignItems={'center'}>
                         <FormLabel htmlFor="serverType" width={110}>
                           Type
                         </FormLabel>
@@ -136,7 +136,7 @@ const AddServerModal = ({ onClose }: { onClose: () => void }) => {
                 <Field name="version" value={props.values.serverType === 'AGE'}>
                   {(field, form) => {
                     return (
-                      <FormControl display={'flex'} alignItems={'row'}>
+                      <FormControl display={'flex'} alignItems={'center'}>
                         <FormLabel htmlFor="version" width={110}>
                           Version
                         </FormLabel>
@@ -173,7 +173,7 @@ const AddServerModal = ({ onClose }: { onClose: () => void }) => {
                 <Field name="name" placeholder="Name">
                   {(field, form) => {
                     return (
-                      <FormControl display={'flex'} alignItems={'row'}>
+                      <FormControl display={'flex'} alignItems={'center'}>
                         <FormLabel htmlFor="name" width={110}>
                           Name
                         </FormLabel>
@@ -192,7 +192,7 @@ const AddServerModal = ({ onClose }: { onClose: () => void }) => {
                 <Field name="host" placeholder="Host">
                   {(field, form) => {
                     return (
-                      <FormControl display={'flex'} alignItems={'row'}>
+                      <FormControl display={'flex'} alignItems={'center'}>
                         <FormLabel htmlFor="host" width={110}>
                           Host
                         </FormLabel>
@@ -211,7 +211,7 @@ const AddServerModal = ({ onClose }: { onClose: () => void }) => {
                 <Field name="port" placeholder="Port">
                   {(field, form) => {
                     return (
-                      <FormControl display={'flex'} alignItems={'row'}>
+                      <FormControl display={'flex'} alignItems={'center'}>
                         <FormLabel htmlFor="port" width={110}>
                           Port
                         </FormLabel>
@@ -230,7 +230,7 @@ const AddServerModal = ({ onClose }: { onClose: () => void }) => {
                 <Field name="database" placeholder="Database">
                   {(field, form) => {
                     return (
-                      <FormControl display={'flex'} alignItems={'row'}>
+                      <FormControl display={'flex'} alignItems={'center'}>
                         <FormLabel htmlFor="database" width={110}>
                           Database
                         </FormLabel>
@@ -249,7 +249,7 @@ const AddServerModal = ({ onClose }: { onClose: () => void }) => {
                 <Field name="username" placeholder="Username">
                   {(field, form) => {
                     return (
-                      <FormControl display={'flex'} alignItems={'row'}>
+                      <FormControl display={'flex'} alignItems={'center'}>
                         <FormLabel htmlFor="username" width={110}>
                           Username
                         </FormLabel>
@@ -268,7 +268,7 @@ const AddServerModal = ({ onClose }: { onClose: () => void }) => {
                 <Field name="password" placeholder="Password">
                   {(field, form) => {
                     return (
-                      <FormControl display={'flex'} alignItems={'row'}>
+                      <FormControl display={'flex'} alignItems={'center'}>
                         <FormLabel htmlFor="password" width={110}>
                           Password
                         </FormLabel>

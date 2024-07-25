@@ -9,7 +9,6 @@ import {
   Button,
   useDisclosure,
 } from '@chakra-ui/react';
-import exp from 'constants';
 
 const AlertDialogBox = ({
   title,

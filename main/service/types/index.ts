@@ -28,3 +28,25 @@ export interface Server {
   serverType: AGE_FLAVOR;
   version: string;
 }
+
+export interface _Workspace {
+  id: string;
+  server_id: string;
+  graph: string;
+  name: string;
+  sql_path: string;
+  json_path: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Workspace {
+  id: string;
+  serverId: string;
+  graph: string;
+  name: string;
+  sqlPath: string;
+  jsonPath: string;
+  createdAt: string;
+  updatedAt: string;
+}

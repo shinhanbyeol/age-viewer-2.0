@@ -3,7 +3,7 @@ import Styels from './ServerList.module.scss';
 import { ServerResponse } from '../../../types';
 
 import { Accordion } from '@chakra-ui/react';
-import Server from './Server';
+import Server from '../ServerItem';
 
 interface ServerListProps {
   servers: ServerResponse[];

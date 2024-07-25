@@ -18,6 +18,7 @@ const tb_workspaces = `
 CREATE TABLE IF NOT EXISTS tb_workspaces (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   server_id INTEGER NOT NULL,
+  graph TEXT,
   name TEXT NOT NULL,
   sql_path TEXT,
   json_path TEXT,

@@ -1,8 +1,8 @@
-import { Accordion, ButtonSpinner, CircularProgress } from '@chakra-ui/react';
+import { Accordion, ButtonSpinner } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
 import { createConnectionResponse, ServerResponse } from '../../../types';
 import { useServerOfSessionStore } from '../../../stores/serverofSessionStore';
-import Graph from './Graph';
+import Graph from '../GraphItem';
 
 interface props {
   server: ServerResponse;
@@ -48,7 +48,6 @@ const ServerPanel = ({ server }) => {
       connecting();
     } else {
       window.ipc.invoke('getGraphs', sessionId).then((res) => {
-        console.log('graphGraphs', res);
         setGraphPaths(res);
       });
     }
@@ -59,9 +58,9 @@ const ServerPanel = ({ server }) => {
       {isConnecting && <ButtonSpinner />}
       {errorMessage && isError && <p>{errorMessage}</p>}
       {/* {sessionId && <p>Session ID: {sessionId}</p>} */}
-      <Accordion allowMultiple pl={4}>
+      <Accordion allowMultiple>
         {graphPaths.map((gpath) => (
-          <Graph graphPathName={gpath} />
+          <Graph graphPathName={gpath} server={server} sessionId={sessionId} />
         ))}
       </Accordion>
     </>

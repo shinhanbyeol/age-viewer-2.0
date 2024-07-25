@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   AccordionItem,
   AccordionButton,
@@ -7,8 +7,16 @@ import {
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { PiGraph } from 'react-icons/pi';
+import WorkspaceList from '../WorkspaceList';
+import { ServerResponse } from '../../../types';
 
-const Graph = ({ graphPathName }: { graphPathName: string }) => {
+interface GraphProps {
+  graphPathName: string;
+  server: ServerResponse;
+  sessionId: string;
+}
+
+const Graph = ({ graphPathName, server, sessionId }: GraphProps) => {
   return (
     <AccordionItem>
       {({ isExpanded }) => (
@@ -17,6 +25,7 @@ const Graph = ({ graphPathName }: { graphPathName: string }) => {
             as={Button}
             width={'100%'}
             h={'1.5em'}
+            pl={8}
             leftIcon={<PiGraph />}
             rightIcon={<ChevronDownIcon />}
             justifyContent={'space-between'}
@@ -25,13 +34,12 @@ const Graph = ({ graphPathName }: { graphPathName: string }) => {
             {graphPathName}
           </AccordionButton>
           {isExpanded && (
-            <AccordionPanel pt={0} pl={8}>
-              <div>
-                <p>test.sql</p>
-                <p>graph.sql</p>
-                <p>my-agens.slq</p>
-                <p>fds.sql</p>
-              </div>
+            <AccordionPanel p={0}>
+              <WorkspaceList
+                server={server}
+                graph={graphPathName}
+                sessionId={sessionId}
+              />
             </AccordionPanel>
           )}
         </>
@@ -40,4 +48,4 @@ const Graph = ({ graphPathName }: { graphPathName: string }) => {
   );
 };
 
-export default Graph;
+export default memo(Graph);
