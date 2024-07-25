@@ -58,7 +58,11 @@ function WorkspacePage() {
           </Breadcrumb>
           <Box position={'relative'} display={'block'} flex={1}>
             <Result />
-            <CodeEditor workspaceSqlPath={workspaceSqlPath as string} />
+            <CodeEditor
+              workspaceSqlPath={workspaceSqlPath as string}
+              sessionId={sessionId as string}
+              graph={graph as string}
+            />
           </Box>
         </Stack>
       </Main>

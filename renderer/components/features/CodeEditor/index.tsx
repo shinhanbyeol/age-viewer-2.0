@@ -12,12 +12,19 @@ import { Box, Button } from '@chakra-ui/react';
 import Styles from './CodeEditor.module.scss';
 import { PiPlay } from 'react-icons/pi';
 import { debounce } from 'lodash';
+import { session } from 'electron';
 
 interface CodeEditorProps {
   workspaceSqlPath: string;
+  graph: string;
+  sessionId: string;
 }
 
-const CodeEditor = ({ workspaceSqlPath }: CodeEditorProps) => {
+const CodeEditor = ({
+  workspaceSqlPath,
+  sessionId,
+  graph,
+}: CodeEditorProps) => {
   const [expanded, setExpanded] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
   const rootRef = useRef<HTMLDivElement>(null);
@@ -26,6 +33,9 @@ const CodeEditor = ({ workspaceSqlPath }: CodeEditorProps) => {
     setExpanded(true);
   };
 
+  /**
+   * @description Close the editor when clicking outside
+   */
   const handleClickOutside = useCallback(
     (e: MouseEvent) => {
       if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
@@ -35,6 +45,10 @@ const CodeEditor = ({ workspaceSqlPath }: CodeEditorProps) => {
     [rootRef, setExpanded],
   );
 
+  /**
+   * @description Save SQL file
+   * @param value
+   */
   const handleSaveSql = useMemo(() => {
     return debounce((value: string) => {
       window.ipc
@@ -45,6 +59,24 @@ const CodeEditor = ({ workspaceSqlPath }: CodeEditorProps) => {
         .then((res) => {});
     }, 500);
   }, [workspaceSqlPath]);
+
+  /**
+   * @description Run Query
+   * @param value
+   */
+  const handleRunQuery = useMemo(() => {
+    return debounce((value: string) => {
+      window.ipc
+        .invoke('excuteQuery', {
+          sessionId: sessionId,
+          graph: graph,
+          query: value,
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    }, 500);
+  }, [sessionId, graph]);
 
   // 포커스 관련 이벤트 등록
   useEffect(() => {
@@ -73,7 +105,13 @@ const CodeEditor = ({ workspaceSqlPath }: CodeEditorProps) => {
           display={'flex'}
           justifyContent={'flex-end'}
         >
-          <Button backgroundColor={'#63b3ed'} leftIcon={<PiPlay />}>
+          <Button
+            backgroundColor={'#63b3ed'}
+            leftIcon={<PiPlay />}
+            onClick={() => {
+              handleRunQuery(code);
+            }}
+          >
             Run Query
           </Button>
         </Box>
@@ -85,6 +123,7 @@ const CodeEditor = ({ workspaceSqlPath }: CodeEditorProps) => {
           height="100%"
           onFocus={handleOnFocusAtEditor}
           onChange={(value) => {
+            setCode(value);
             handleSaveSql(value);
           }}
         />
