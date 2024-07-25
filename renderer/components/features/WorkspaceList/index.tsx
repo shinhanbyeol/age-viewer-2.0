@@ -14,7 +14,7 @@ interface WorkspaceProps {
 }
 
 const Workspace = ({ server, graph, sessionId }: WorkspaceProps) => {
-  const [workspaces, setWorkspaces] = useState<string[]>([]);
+  const [workspaces, setWorkspaces] = useState<WorkspaceResponse[]>([]);
   const [clickedWorkspace, setClickedWorkspace] = useState<number | null>();
   const [showNewWorkspaceModal, setShowNewWorkspaceModal] =
     useState<() => void>();
@@ -30,7 +30,9 @@ const Workspace = ({ server, graph, sessionId }: WorkspaceProps) => {
           serverName: server.name,
           graph: graph,
           sessionId: sessionId,
-          workspaceName: workspaces[clickedWorkspace],
+          workspaceName: workspaces[clickedWorkspace].name,
+          workspaceSqlPath: workspaces[clickedWorkspace].sqlPath,
+          workspaceJsonPath: workspaces[clickedWorkspace].jsonPath,
         },
       });
     }
@@ -43,7 +45,7 @@ const Workspace = ({ server, graph, sessionId }: WorkspaceProps) => {
         graph: graph,
       })
       .then((res: WorkspaceResponse[]) => {
-        setWorkspaces(res.map((ws) => ws.name));
+        setWorkspaces(res.map((ws) => ws));
       });
   };
 
@@ -106,7 +108,7 @@ const Workspace = ({ server, graph, sessionId }: WorkspaceProps) => {
                 onDoubleClick={handleWorkspaceDoubleClick}
               >
                 {clickedWorkspace === index}
-                {workspace}
+                {workspace.name}
               </a>
             </Box>
           );

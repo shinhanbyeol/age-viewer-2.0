@@ -297,6 +297,44 @@ class IpcMainController {
     );
 
     /**
+     * @description for file update by full file path
+     * @param {String} payload.filePath
+     * @param {String} payload.fileData
+     */
+    ipcMain.handle(
+      'writeFile/fullPath',
+      async (
+        event,
+        payload: {
+          filePath: string;
+          fileData: string;
+        },
+      ) => {
+        try {
+          await fs.writeFileSync(payload.filePath, payload.fileData);
+        } catch (err) {
+          return new Error(err);
+        }
+      },
+    );
+
+    /**
+     * @description for file read by full file path
+     * @param {String}
+     * @returns {Promise<File>}
+     * @param {String} payload.filePath
+     */
+    ipcMain.handle('readFile/fullPath', async (event, payload: string) => {
+      try {
+        const code = await fs.readFileSync(payload, 'utf8');
+        return code;
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    });
+
+    /**
      * @description Write File
      *              Save the file to different paths depending on the file type.
      *              kor: 파일 쓰기

@@ -35,7 +35,7 @@ export const Sidebar = ({ x }: SidebarProps) => {
             }}
             onClick={() => {
               setSidebar('home');
-              router.push('/home');
+              // router.push('/home');
             }}
           >
             <Icon as={MdHome} />

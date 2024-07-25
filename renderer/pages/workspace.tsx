@@ -4,13 +4,28 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Box, Breadcrumb, BreadcrumbItem, Stack, Text } from '@chakra-ui/react';
 import CodeEditor from '../components/features/CodeEditor';
+import Result from '../components/features/Result';
 
 function WorkspacePage() {
   const router = useRouter();
-  const { serverId, serverName, graph, sessionId, workspaceName } =
-    router.query;
+  const {
+    serverId,
+    serverName,
+    graph,
+    sessionId,
+    workspaceName,
+    workspaceSqlPath,
+    workspaceJsonPath,
+  } = router.query;
 
-  if (!serverId || !graph || !sessionId || !workspaceName) {
+  if (
+    !serverId ||
+    !graph ||
+    !sessionId ||
+    !workspaceName ||
+    !workspaceSqlPath ||
+    !workspaceJsonPath
+  ) {
     return (
       <React.Fragment>
         <Head>
@@ -42,10 +57,8 @@ function WorkspacePage() {
             </BreadcrumbItem>
           </Breadcrumb>
           <Box position={'relative'} display={'block'} flex={1}>
-            <Box>
-              <Text fontSize={'4xl'}>Result</Text>
-            </Box>
-            <CodeEditor />
+            <Result />
+            <CodeEditor workspaceSqlPath={workspaceSqlPath as string} />
           </Box>
         </Stack>
       </Main>
