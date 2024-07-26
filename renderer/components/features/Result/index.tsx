@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import sigma from 'sigma';
 import { useGraphologyStore } from '../../../stores';
 
@@ -24,6 +24,8 @@ const Result = ({
 
   const renderer = useMemo(() => {
     if (!sigmaContainerRef.current) return;
+    // distroy the previous instance
+    sigmaContainerRef.current.innerHTML = '';
     return new sigma(graphology, sigmaContainerRef.current);
   }, [graphology, lastExecutedTime]);
 
@@ -35,7 +37,7 @@ const Result = ({
       flexDirection={'column'}
       justifyContent={'center'}
     >
-      {graphology.nodes().length > 0 || graphology.edges().length > 0 ? (
+      {graphology?.nodes().length > 0 || graphology?.edges().length > 0 ? (
         <>
           {/* <div className="deubging page">
             <b>node:</b> <br />
