@@ -17,12 +17,15 @@ const Result = ({
   sessionId: string;
 }) => {
   const graphology = useGraphologyStore((state) => state.graphology);
+  const lastExecutedTime = useGraphologyStore(
+    (state) => state.lastExecutedTime,
+  );
   const sigmaContainerRef = useRef<HTMLDivElement>(null);
 
   const renderer = useMemo(() => {
     if (!sigmaContainerRef.current) return;
     return new sigma(graphology, sigmaContainerRef.current);
-  }, []);
+  }, [graphology, lastExecutedTime]);
 
   return (
     <Box
