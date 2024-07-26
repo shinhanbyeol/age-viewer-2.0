@@ -18,8 +18,6 @@ const Result = ({
   sessionId: string;
 }) => {
   const graphology = useGraphologyStore((state) => state.graphology);
-  const nodeCnt = useGraphologyStore((state) => state.nodescount);
-  const edgeCnt = useGraphologyStore((state) => state.edgescount);
 
   return (
     <Box

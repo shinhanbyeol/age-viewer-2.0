@@ -57,14 +57,14 @@ const useGraphology = () => {
     if (!graphology) return;
     graphology.clear();
     data.nodes.forEach((node) => {
-      graphology.addNode(node.key, {
+      graphology.mergeNode(node.key, {
         id: node.id,
         label: node.label,
         propperties: node.properties,
       });
     });
     data.edges.forEach((edge) => {
-      graphology.addEdgeWithKey(edge.key, edge.source, edge.target, {
+      graphology.mergeEdgeWithKey(edge.key, edge.source, edge.target, {
         id: edge.id,
         label: edge.label,
         properties: edge.properties,
