@@ -61,6 +61,8 @@ const useGraphology = () => {
         id: node.id,
         label: node.label,
         propperties: node.properties,
+        x: 0,
+        y: 0,
       });
     });
     data.edges.forEach((edge) => {

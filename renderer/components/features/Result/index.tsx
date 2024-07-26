@@ -1,8 +1,7 @@
 import { Box } from '@chakra-ui/react';
-import React, { use, useEffect, useState } from 'react';
-import useGraphology from '../../../hooks/useGraphology';
+import React, { useMemo, useRef } from 'react';
+import sigma from 'sigma';
 import { useGraphologyStore } from '../../../stores';
-import { MultiDirectedGraph } from 'graphology';
 
 const Result = ({
   workspaceName,
@@ -18,6 +17,12 @@ const Result = ({
   sessionId: string;
 }) => {
   const graphology = useGraphologyStore((state) => state.graphology);
+  const sigmaContainerRef = useRef<HTMLDivElement>(null);
+
+  const renderer = useMemo(() => {
+    if (!sigmaContainerRef.current) return;
+    return new sigma(graphology, sigmaContainerRef.current);
+  }, []);
 
   return (
     <Box
@@ -29,7 +34,7 @@ const Result = ({
     >
       {graphology.nodes().length > 0 || graphology.edges().length > 0 ? (
         <>
-          <div>
+          {/* <div className="deubging page">
             <b>node:</b> <br />
             {JSON.stringify(
               graphology
@@ -47,7 +52,16 @@ const Result = ({
               null,
               2,
             )}
-          </div>
+          </div> */}
+          <div
+            ref={sigmaContainerRef}
+            style={{
+              backgroundColor: '#f5f5f5',
+              width: '500px',
+              height: '500px',
+              border: '1px solid #000',
+            }}
+          />
         </>
       ) : (
         <>
