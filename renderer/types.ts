@@ -1,3 +1,5 @@
+import { GraphData } from './hooks/useGraphology';
+
 // common types set
 export enum AGE_FLAVOR {
   /** Apace AGE [https://age.apache.org/] */
@@ -42,4 +44,12 @@ export interface WorkspaceResponse {
   jsonPath: string;
   created_at: string;
   updated_at: string;
+}
+
+// AgensGraph
+export interface ExecuteQueryResponseBy {
+  columns: string[];
+  command: string;
+  rowCount: number;
+  result: GraphData;
 }

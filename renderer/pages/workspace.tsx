@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Main } from '../layout/Main/Main';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Box, Breadcrumb, BreadcrumbItem, Stack, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  Stack,
+  Text,
+  useEditable,
+} from '@chakra-ui/react';
 import CodeEditor from '../components/features/CodeEditor';
 import Result from '../components/features/Result';
+import useGraphology from '../hooks/useGraphology';
+import { useGraphologyStore } from '../stores';
+import { set } from 'lodash';
 
 function WorkspacePage() {
   const router = useRouter();
@@ -18,6 +28,7 @@ function WorkspacePage() {
     workspaceJsonPath,
   } = router.query;
 
+  // Check if the query is not null else return an error message
   if (
     !serverId ||
     !graph ||
@@ -38,6 +49,24 @@ function WorkspacePage() {
     );
   }
 
+  // graphology hook
+  const { initGraphology } = useGraphology();
+  const { setLastInitTime } = useGraphologyStore();
+
+  // initialize the graphology
+  useEffect(() => {
+    initGraphology(workspaceName as string, graph as string, Number(serverId));
+    setLastInitTime(Date.now());
+  }, [
+    serverId,
+    serverName,
+    graph,
+    sessionId,
+    workspaceName,
+    workspaceSqlPath,
+    workspaceJsonPath,
+  ]);
+
   return (
     <React.Fragment>
       <Head>
@@ -57,7 +86,13 @@ function WorkspacePage() {
             </BreadcrumbItem>
           </Breadcrumb>
           <Box position={'relative'} display={'block'} flex={1}>
-            <Result />
+            <Result
+              workspaceName={workspaceName as string}
+              workspaceJsonPath={workspaceJsonPath as string}
+              sessionId={sessionId as string}
+              serverId={serverId as string}
+              graph={graph as string}
+            />
             <CodeEditor
               workspaceSqlPath={workspaceSqlPath as string}
               sessionId={sessionId as string}

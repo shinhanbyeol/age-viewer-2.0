@@ -1,7 +1,7 @@
 import { Accordion, ButtonSpinner } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
 import { createConnectionResponse, ServerResponse } from '../../../types';
-import { useServerOfSessionStore } from '../../../stores/serverofSessionStore';
+import { useServerOfSessionStore } from '../../../stores';
 import Graph from '../GraphItem';
 
 interface props {
@@ -59,8 +59,13 @@ const ServerPanel = ({ server }) => {
       {errorMessage && isError && <p>{errorMessage}</p>}
       {/* {sessionId && <p>Session ID: {sessionId}</p>} */}
       <Accordion allowMultiple>
-        {graphPaths.map((gpath) => (
-          <Graph graphPathName={gpath} server={server} sessionId={sessionId} />
+        {graphPaths.map((gpath, index) => (
+          <Graph
+            key={`graph-${index}`}
+            graphPathName={gpath}
+            server={server}
+            sessionId={sessionId}
+          />
         ))}
       </Accordion>
     </>

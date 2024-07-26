@@ -1,4 +1,6 @@
-import { Pool } from 'pg';
+import { types as pgTypes, Pool as PgPool } from 'pg';
+import { Pool as AgensPool } from '@bitnine-oss/ag-driver';
+import { setAGETypes } from '../libs/node-age-pg';
 import { getQuery } from './ageFlavorManager';
 import { AGE_FLAVOR } from './types';
 
@@ -7,12 +9,22 @@ const AGENSGRAPH_LATEST_VERSION = process.env.AGENSGRAPH_LATEST_VERSION;
 
 class ConnectionPool {
   config;
-  pool: Pool | null = null;
+  pool: PgPool | AgensPool = null;
   type: AGE_FLAVOR;
   version: string;
   sqls;
   constructor(config = null, type: AGE_FLAVOR = null, version = null) {
-    this.pool = new Pool(config);
+    switch (type) {
+      case AGE_FLAVOR.AGE:
+        this.pool = new PgPool(config);
+        break;
+      case AGE_FLAVOR.AGENSGRAPH:
+        this.pool = new AgensPool(config);
+        break;
+      default:
+        console.warn('Connection Type is not defined. set AGE as default.');
+        this.pool = new PgPool(config);
+    }
     this.config = config;
 
     if (type == null) {
@@ -29,7 +41,7 @@ class ConnectionPool {
         console.warn(
           'AgensGraph Version is not defined. set latest as default.',
         );
-        this.version = version || '2.14';
+        this.version = version || AGENSGRAPH_LATEST_VERSION;
       }
     }
 
@@ -89,9 +101,8 @@ class ConnectionPool {
     if (this.pool === null) return null;
     const client = await this.pool.connect();
     if (scheme && this.type === AGE_FLAVOR.AGE) {
-      await client.query(
-        `LOAD 'age'; SET search_path = ag_catalog, "$user", public;`,
-      );
+      client.connect();
+      await setAGETypes(client, pgTypes as any);
     }
     if (scheme && this.type === AGE_FLAVOR.AGENSGRAPH) {
       await client.query(

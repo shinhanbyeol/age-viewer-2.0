@@ -243,7 +243,7 @@ class IpcMainController {
       const connection = await this.connectionsMap.getConnection(
         payload.sessionId,
       );
-      const cypherService = new CypherService(connection);
+      const cypherService = new CypherService(connection.type);
       const result = await connection.excuteQuery(payload.query, payload.graph);
       return cypherService.createResult(result);
     });

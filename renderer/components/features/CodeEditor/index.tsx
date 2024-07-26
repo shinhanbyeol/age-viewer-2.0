@@ -12,7 +12,9 @@ import { Box, Button } from '@chakra-ui/react';
 import Styles from './CodeEditor.module.scss';
 import { PiPlay } from 'react-icons/pi';
 import { debounce } from 'lodash';
-import { session } from 'electron';
+import useGraphology from '../../../hooks/useGraphology';
+import { ExecuteQueryResponseBy } from '../../../types';
+import { useGraphologyStore } from '../../../stores';
 
 interface CodeEditorProps {
   workspaceSqlPath: string;
@@ -28,6 +30,9 @@ const CodeEditor = ({
   const [expanded, setExpanded] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
   const rootRef = useRef<HTMLDivElement>(null);
+  const { importGraphologyData } = useGraphology();
+  const { setEdgesCount, setNodesCount, setLastExecutedTime } =
+    useGraphologyStore();
 
   const handleOnFocusAtEditor = () => {
     setExpanded(true);
@@ -72,8 +77,13 @@ const CodeEditor = ({
           graph: graph,
           query: value,
         })
-        .then((res) => {
-          console.log(res);
+        .then((res: ExecuteQueryResponseBy) => {
+          if (res) {
+            importGraphologyData(res.result);
+            setNodesCount(res.result.nodes.length);
+            setEdgesCount(res.result.edges.length);
+            setLastExecutedTime(Date.now());
+          }
         });
     }, 500);
   }, [sessionId, graph]);
