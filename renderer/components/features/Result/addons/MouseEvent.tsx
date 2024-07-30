@@ -29,7 +29,6 @@ const MouseEvent = () => {
       },
       mousemove: (e) => {
         if (dragElements !== null && isDragging) {
-          console.log(dragElements, isDragging);
           const graph = sigma.getGraph();
           const pos = sigma.viewportToGraph(e);
           graph?.setNodeAttribute(dragElements, 'x', pos.x);

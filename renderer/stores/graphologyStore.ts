@@ -6,6 +6,7 @@ interface GraphologyStore {
   graphology?: MultiDirectedGraph;
   nodescount: number;
   edgescount: number;
+  layout: string;
   // this value must be update when the query is executed (very important thing)
   lastExecutedTime?: number;
   lastInitTime?: number;
@@ -18,6 +19,7 @@ interface GraphologyActions {
   setEdgesCount: (count: number) => void;
   setLastExecutedTime: (time: number) => void;
   setLastInitTime: (time: number) => void;
+  setLayout: (layout: string) => void;
 }
 
 export type GraphologyStoreType = GraphologyStore & GraphologyActions;
@@ -26,6 +28,7 @@ export const defaultGraphologyState: GraphologyStore = {
   graphology: undefined,
   nodescount: 0,
   edgescount: 0,
+  layout: 'random',
   lastExecutedTime: undefined,
 };
 
@@ -47,4 +50,5 @@ export const useGraphologyStore = create<GraphologyStoreType>((set) => ({
   setEdgesCount: (count) => set({ edgescount: count }),
   setLastExecutedTime: (time) => set({ lastExecutedTime: time }),
   setLastInitTime: (time) => set({ lastInitTime: time }),
+  setLayout: (layout) => set({ layout }),
 }));

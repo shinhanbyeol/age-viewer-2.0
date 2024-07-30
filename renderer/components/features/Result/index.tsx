@@ -1,10 +1,13 @@
 import { Box } from '@chakra-ui/react';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useGraphologyStore } from '../../../stores';
 import { SigmaContainer } from '@react-sigma/core';
 import Styles from './Result.module.scss';
 import MouseEvent from './addons/MouseEvent';
 import ExecutedEvent from './addons/ExecutedEvent';
+import Layout from './addons/Layout';
+import Control from './addons/Control';
+import { size } from 'lodash';
 
 const Result = ({
   workspaceName,
@@ -40,7 +43,7 @@ const Result = ({
           graph={graphology}
           className={Styles.SigmaContainer}
           settings={{
-            labelSize: 18,
+            labelSize: 16,
             renderEdgeLabels: true,
             enableEdgeEvents: true,
             itemSizesReference:
@@ -49,8 +52,16 @@ const Result = ({
             zoomToSizeRatioFunction(ratio) {
               return ratio;
             },
+            nodeReducer: (node, attr) => {
+              const nodeStyledata = {
+                size: 20,
+              };
+              return { ...attr, ...nodeStyledata };
+            },
           }}
         >
+          <Control />
+          <Layout lastExecutedTime={lastExecutedTime} />
           <MouseEvent />
           <ExecutedEvent lastExecutedTime={lastExecutedTime} />
         </SigmaContainer>
