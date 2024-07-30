@@ -1,6 +1,6 @@
 import { create, StoreApi } from 'zustand';
 import { MultiDirectedGraph } from 'graphology';
-import { stat } from 'fs';
+import { produce } from 'immer';
 
 interface GraphologyStore {
   graphology?: MultiDirectedGraph;
@@ -13,6 +13,7 @@ interface GraphologyStore {
 
 interface GraphologyActions {
   initGraphology: (g: MultiDirectedGraph) => void;
+  updateGraphology: (g: MultiDirectedGraph) => void;
   setNodesCount: (count: number) => void;
   setEdgesCount: (count: number) => void;
   setLastExecutedTime: (time: number) => void;
@@ -30,7 +31,18 @@ export const defaultGraphologyState: GraphologyStore = {
 
 export const useGraphologyStore = create<GraphologyStoreType>((set) => ({
   ...defaultGraphologyState,
-  initGraphology: (g) => set({ graphology: g }),
+  initGraphology: (g) =>
+    set(
+      produce((state) => {
+        state.graphology = g;
+      }),
+    ),
+  updateGraphology: (g) =>
+    set(
+      produce((state) => {
+        state.graphology = g;
+      }),
+    ),
   setNodesCount: (count) => set({ nodescount: count }),
   setEdgesCount: (count) => set({ edgescount: count }),
   setLastExecutedTime: (time) => set({ lastExecutedTime: time }),

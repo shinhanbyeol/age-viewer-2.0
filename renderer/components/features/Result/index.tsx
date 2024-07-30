@@ -1,7 +1,10 @@
 import { Box } from '@chakra-ui/react';
-import React, { useEffect, useMemo, useRef } from 'react';
-import sigma from 'sigma';
+import React, { useEffect, useRef } from 'react';
 import { useGraphologyStore } from '../../../stores';
+import { SigmaContainer } from '@react-sigma/core';
+import Styles from './Result.module.scss';
+import MouseEvent from './addons/MouseEvent';
+import ExecutedEvent from './addons/ExecutedEvent';
 
 const Result = ({
   workspaceName,
@@ -20,14 +23,8 @@ const Result = ({
   const lastExecutedTime = useGraphologyStore(
     (state) => state.lastExecutedTime,
   );
-  const sigmaContainerRef = useRef<HTMLDivElement>(null);
 
-  const renderer = useMemo(() => {
-    if (!sigmaContainerRef.current) return;
-    // distroy the previous instance
-    sigmaContainerRef.current.innerHTML = '';
-    return new sigma(graphology, sigmaContainerRef.current);
-  }, [graphology, lastExecutedTime]);
+  useEffect(() => {}, [lastExecutedTime]);
 
   return (
     <Box
@@ -36,38 +33,27 @@ const Result = ({
       display={'flex'}
       flexDirection={'column'}
       justifyContent={'center'}
+      position={'relative'}
     >
       {graphology?.nodes().length > 0 || graphology?.edges().length > 0 ? (
-        <>
-          {/* <div className="deubging page">
-            <b>node:</b> <br />
-            {JSON.stringify(
-              graphology
-                .nodes()
-                .map((node) => graphology.getNodeAttributes(node)),
-              null,
-              2,
-            )}{' '}
-          </div>
-          <br />
-          <div>
-            <b>edge:</b> <br />
-            {JSON.stringify(
-              graphology.edges().map((e) => graphology.getEdgeAttributes(e)),
-              null,
-              2,
-            )}
-          </div> */}
-          <div
-            ref={sigmaContainerRef}
-            style={{
-              backgroundColor: '#f5f5f5',
-              width: '500px',
-              height: '500px',
-              border: '1px solid #000',
-            }}
-          />
-        </>
+        <SigmaContainer
+          graph={graphology}
+          className={Styles.SigmaContainer}
+          settings={{
+            labelSize: 18,
+            renderEdgeLabels: true,
+            enableEdgeEvents: true,
+            itemSizesReference:
+              graphology.nodes().length < 6 ? 'screen' : 'positions',
+            allowInvalidContainer: true,
+            zoomToSizeRatioFunction(ratio) {
+              return ratio;
+            },
+          }}
+        >
+          <MouseEvent />
+          <ExecutedEvent lastExecutedTime={lastExecutedTime} />
+        </SigmaContainer>
       ) : (
         <>
           <Box fontSize={'4xl'} color={'#c4c4c4'} margin={'0 auto'} h={'12rem'}>

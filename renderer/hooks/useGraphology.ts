@@ -1,6 +1,6 @@
 import { MultiDirectedGraph } from 'graphology';
 import { useGraphologyStore } from '../stores/graphologyStore';
-import { useStore } from 'zustand';
+import { useCallback } from 'react';
 
 export type Vertex = {
   key: string;
@@ -29,55 +29,58 @@ export type GraphData = {
 
 const useGraphology = () => {
   const graphology = useGraphologyStore((state) => state.graphology);
+  const { initGraphology, updateGraphology } = useGraphologyStore();
 
   /**
    * @description Initialize graphology instance
    * @returns {void}
    */
-  function initGraphology(
-    workSpaceName: string,
-    graphname: string,
-    serverId: number,
-  ) {
-    const g = new MultiDirectedGraph({
-      allowSelfLoops: true,
-    });
-    g.setAttribute('workspace', workSpaceName);
-    g.setAttribute('graph', graphname);
-    g.setAttribute('serverId', serverId);
-    useGraphologyStore.setState({ graphology: g });
-  }
+  const init = useCallback(
+    (workSpaceName: string, graphname: string, serverId: number) => {
+      const g = new MultiDirectedGraph({
+        allowSelfLoops: true,
+      });
+      g.setAttribute('workspace', workSpaceName);
+      g.setAttribute('graph', graphname);
+      g.setAttribute('serverId', serverId);
+      initGraphology(g);
+    },
+    [initGraphology],
+  );
 
   /**
    * @description Import graphology data
    * @param {GraphData} data
    * @returns {void}
    */
-  function importGraphologyData(data: GraphData) {
-    if (!graphology) return;
-    graphology.clear();
-    data.nodes.forEach((node) => {
-      graphology.mergeNode(node.key, {
-        id: node.id,
-        label: node.label,
-        propperties: node.properties,
-        x: 0,
-        y: 0,
+  const importGraphologyData = useCallback(
+    (data: GraphData) => {
+      if (!graphology) return;
+      graphology.clear();
+      data.nodes.forEach((node) => {
+        graphology.mergeNode(node.key, {
+          id: node.id,
+          label: node.label,
+          propperties: node.properties,
+          x: 0,
+          y: 0,
+        });
       });
-    });
-    data.edges.forEach((edge) => {
-      graphology.mergeEdgeWithKey(edge.key, edge.source, edge.target, {
-        id: edge.id,
-        label: edge.label,
-        properties: edge.properties,
+      data.edges.forEach((edge) => {
+        graphology.mergeEdgeWithKey(edge.key, edge.source, edge.target, {
+          id: edge.id,
+          label: edge.label,
+          properties: edge.properties,
+        });
       });
-    });
-    useGraphologyStore.setState({ graphology: graphology });
-  }
+      updateGraphology(graphology);
+    },
+    [graphology, updateGraphology],
+  );
 
   return {
     graphology,
-    initGraphology,
+    init,
     importGraphologyData,
   };
 };

@@ -14,7 +14,6 @@ import CodeEditor from '../components/features/CodeEditor';
 import Result from '../components/features/Result';
 import useGraphology from '../hooks/useGraphology';
 import { useGraphologyStore } from '../stores';
-import { set } from 'lodash';
 
 function WorkspacePage() {
   const router = useRouter();
@@ -50,12 +49,12 @@ function WorkspacePage() {
   }
 
   // graphology hook
-  const { initGraphology } = useGraphology();
+  const { init } = useGraphology();
   const { setLastInitTime } = useGraphologyStore();
 
   // initialize the graphology
   useEffect(() => {
-    initGraphology(workspaceName as string, graph as string, Number(serverId));
+    init(workspaceName as string, graph as string, Number(serverId));
     setLastInitTime(Date.now());
   }, [
     serverId,

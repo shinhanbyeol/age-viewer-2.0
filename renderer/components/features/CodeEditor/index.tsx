@@ -11,7 +11,7 @@ import { Box, Button } from '@chakra-ui/react';
 // Styles
 import Styles from './CodeEditor.module.scss';
 import { PiPlay } from 'react-icons/pi';
-import { debounce } from 'lodash';
+import _, { debounce } from 'lodash';
 import useGraphology from '../../../hooks/useGraphology';
 import { ExecuteQueryResponseBy } from '../../../types';
 import { useGraphologyStore } from '../../../stores';
@@ -86,7 +86,14 @@ const CodeEditor = ({
           }
         });
     }, 500);
-  }, [sessionId, graph]);
+  }, [
+    sessionId,
+    graph,
+    importGraphologyData,
+    setNodesCount,
+    setEdgesCount,
+    setLastExecutedTime,
+  ]);
 
   // 포커스 관련 이벤트 등록
   useEffect(() => {
@@ -101,6 +108,52 @@ const CodeEditor = ({
       typeof res === 'string' ? setCode(res) : setCode('');
     });
   }, [workspaceSqlPath]);
+
+  useEffect(() => {
+    if (expanded) {
+      window.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setExpanded(false);
+        }
+      });
+      window.addEventListener('keydown', (e: KeyboardEvent) => {
+        // ctrl + enter or cmd + enter
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          handleRunQuery(code);
+        }
+        // press f5
+        if (e.key === 'F5') {
+          handleRunQuery(code);
+        }
+      });
+      window.removeEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Tab') {
+          setExpanded(true);
+        }
+      });
+    } else {
+      window.removeEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setExpanded(false);
+        }
+      });
+      window.removeEventListener('keydown', (e: KeyboardEvent) => {
+        // ctrl + enter or cmd + enter
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          handleRunQuery(code);
+        }
+        // press f5
+        if (e.key === 'F5') {
+          handleRunQuery(code);
+        }
+      });
+      window.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Tab') {
+          setExpanded(true);
+        }
+      });
+    }
+  }, [expanded]);
 
   return (
     <div
