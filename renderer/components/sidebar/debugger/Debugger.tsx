@@ -8,7 +8,11 @@ import {
   DEBUGGER_PARAM_TYPE,
 } from '../../../constants/debugFeat';
 
-const IpcDebugger = () => {
+interface IpcDebuggerProps {
+  visible: boolean;
+}
+
+const IpcDebugger = ({ visible }: IpcDebuggerProps) => {
   const { tester, setTester, setResult } = useDebugStore();
   const [param, setParam] = useState<any>(null);
   const [parmField, setParamField] = useState<string>(null);
@@ -52,7 +56,7 @@ const IpcDebugger = () => {
   return (
     <div
       style={{
-        display: 'flex',
+        display: visible ? 'flex' : 'none',
         flexDirection: 'column',
         width: '100%',
         backgroundColor: '#f5f5f5',

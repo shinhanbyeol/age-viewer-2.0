@@ -16,7 +16,11 @@ import AddServer from '../../features/AddServer';
 import ServerList from '../../features/ServerList';
 import { FcAddDatabase } from 'react-icons/fc';
 
-const HomeBar = () => {
+interface HomeBarProps {
+  visible: boolean;
+}
+
+const HomeBar = ({ visible }) => {
   const [servers, setServers] = useState<ServerResponse[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -47,7 +51,12 @@ const HomeBar = () => {
   }, [refreshServers]);
 
   return (
-    <div className={Styels.Root}>
+    <div
+      className={Styels.Root}
+      style={{
+        display: visible ? '' : 'none',
+      }}
+    >
       <Heading
         fontSize="medium"
         fontWeight="bold"
