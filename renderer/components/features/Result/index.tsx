@@ -46,8 +46,7 @@ const Result = ({
             labelSize: 16,
             renderEdgeLabels: true,
             enableEdgeEvents: true,
-            itemSizesReference:
-              graphology.nodes().length < 6 ? 'screen' : 'positions',
+            itemSizesReference: 'screen',
             allowInvalidContainer: true,
             zoomToSizeRatioFunction(ratio) {
               return ratio;
