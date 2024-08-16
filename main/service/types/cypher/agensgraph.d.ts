@@ -1,7 +1,7 @@
 /**
  * @description AgensGraph json format
  */
-export type AgensVertexEdge = {
+type AgensVertexEdge = {
   label: string;
   start?: {
     oid: string;
@@ -18,18 +18,18 @@ export type AgensVertexEdge = {
   props: any;
 };
 
-export type AgensCols = {
+type AgensCols = {
   [keys: string]: AgensVertexEdge;
 };
 
-export type AgensPath = {
+type AgensPath = {
   vertices: AgensVertexEdge[];
   edges: AgensVertexEdge[];
 };
 
-export type AgensRow = AgensCols | AgensPath;
+type AgensRow = AgensCols | AgensPath;
 
-export interface AgensGraphResult {
+interface AgensGraphResult {
   fields: { name: string; dataTypeID: number }[];
   rows: AgensRow[];
 }

@@ -1,10 +1,4 @@
 import { AGE_FLAVOR } from './types/common';
-import {
-  AgensGraphResult,
-  AgensPath,
-  AgensVertexEdge,
-} from './types/cypher/agensgraph';
-import { GraphData } from './types/cypher/graphology';
 
 export default class CypherService {
   type: AGE_FLAVOR;

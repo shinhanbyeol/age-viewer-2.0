@@ -2,7 +2,7 @@
  * @description Graphology json format
  * @see https://graphology.github.io/serialization.html#import
  */
-export type Vertex = {
+type Vertex = {
   key: string;
   id: string;
   label: string;
@@ -11,7 +11,7 @@ export type Vertex = {
   };
 };
 
-export type Edge = {
+type Edge = {
   key: string;
   id: string;
   label: string;
@@ -22,7 +22,7 @@ export type Edge = {
   };
 };
 
-export type GraphData = {
+type GraphData = {
   nodes: Vertex[];
   edges: Edge[];
 };
