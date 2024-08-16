@@ -1,6 +1,6 @@
 import { types as pgTypes, Pool as PgPool } from 'pg';
 import { Pool as AgensPool } from '@bitnine-oss/ag-driver';
-import { setAGETypes } from '../libs/node-age-pg';
+import { setAGETypes } from '../libs/node-age-pg/index.js';
 import { getQuery } from './ageFlavorManager';
 import { AGE_FLAVOR } from './types';
 
@@ -101,7 +101,8 @@ class ConnectionPool {
     if (this.pool === null) return null;
     const client = await this.pool.connect();
     if (scheme && this.type === AGE_FLAVOR.AGE) {
-      client.connect();
+      console.log('==================================');
+      console.log(typeof setAGETypes);
       await setAGETypes(client, pgTypes as any);
     }
     if (scheme && this.type === AGE_FLAVOR.AGENSGRAPH) {
