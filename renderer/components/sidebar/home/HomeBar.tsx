@@ -6,12 +6,15 @@ import Styels from './HomeBar.module.scss';
 import {
   Button,
   Heading,
+  IconButton,
   Modal,
   ModalOverlay,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import AddServer from '../../features/AddServer';
 import ServerList from '../../features/ServerList';
+import { FcAddDatabase } from 'react-icons/fc';
 
 const HomeBar = () => {
   const [servers, setServers] = useState<ServerResponse[]>([]);
@@ -50,18 +53,20 @@ const HomeBar = () => {
         fontWeight="bold"
         display={'flex'}
         alignItems={'center'}
+        justifyContent={'space-between'}
         pl={'1rem'}
+        pr={'1rem'}
         mt={'1rem'}
       >
-        Graph Database instances
-        <Button
-          h={'1.5rem'}
-          margin={'1rem'}
-          backgroundColor={'#c9b3f5'}
+        <Text>Datbase Explorer</Text>
+        {/* <Button h={'1.5rem'} margin={'1rem'} leftIcon={<PiPlusSquareFill />} /> */}
+        <IconButton
+          aria-label="Add database"
+          title="Add database"
           onClick={handleModalOpen}
         >
-          + new server
-        </Button>
+          <FcAddDatabase size={32} />
+        </IconButton>
       </Heading>
       <Modal isOpen={isOpen} onClose={() => onClose()}>
         <ModalOverlay />
