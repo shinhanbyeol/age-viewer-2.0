@@ -1,30 +1,18 @@
 const sqls = {
   nodes: `
-  SELECT label, count(label)::INTEGER as cnt
-  FROM (
-           SELECT ag_catalog._label_name(oid, v)::text as label
-           from cypher('%s', $$
-               MATCH (V:_ag_label_vertex)
-               RETURN id(V)
-               $$) as (V agtype), (SELECT oid FROM ag_catalog.ag_graph where name = '%s') as oid
-       ) b
-  GROUP BY b.label;
+  set graph_path = '%s';
+  MATCH (v) RETURN DISTINCT label(v) AS label, count(v) AS cnt
+  ORDER BY label;
   `,
   edges: `
-  SELECT label, count(label)::INTEGER as cnt
-  FROM (
-           SELECT ag_catalog._label_name(oid, v)::text as label
-           from cypher('%s', $$
-               MATCH ()-[V]-()
-               RETURN id(V)
-               $$) as (V agtype), (SELECT oid FROM ag_catalog.ag_graph where name = '%s') as oid
-       ) b
-  GROUP BY b.label;
+  MATCH (v)-[e]-(v2) RETURN DISTINCT label(e) AS label, count(e) AS cnt
+  ORDER BY label;
   `,
   properties: `select * from (SELECT null as key, null as keytype) A limit 0;`,
-  labels: `SELECT oid as la_oid, name as la_name, kind as la_kind FROM ag_catalog.ag_label;`,
+  labels: `SELECT oid as la_oid, labname as la_name, labkind as la_kind FROM pg_catalog.ag_label;`,
   graphs: `SELECT nspname, pg_authid.rolname as schemaowner
-  FROM pg_namespace join pg_authid on pg_authid.oid = pg_namespace.nspowner;`,
+  FROM pg_namespace join pg_authid on pg_authid.oid = pg_namespace.nspowner
+  join pg_catalog.ag_graph on pg_namespace.oid = ag_graph.nspid;`,
 };
 
 export default sqls;
