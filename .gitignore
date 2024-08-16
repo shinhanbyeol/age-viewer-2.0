@@ -5,3 +5,4 @@ app
 dist
 .DS_Store
 userData/*
+userData/age.dev.sqlite

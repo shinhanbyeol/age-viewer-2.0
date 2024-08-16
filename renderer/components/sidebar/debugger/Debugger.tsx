@@ -59,7 +59,7 @@ const IpcDebugger = () => {
         padding: '1rem',
       }}
     >
-      <Text fontSize={'4xl'}>AGE-Viewer-2.0 IPC Debgger</Text>
+      <Text fontSize={'4xl'}>AGE-Viewer-2.0 IPC Debugger</Text>
       <Select onChange={handleSelectChange} value={tester}>
         {DEBUGGERLIST.map((item) => (
           <option>{item}</option>
