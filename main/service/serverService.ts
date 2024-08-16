@@ -1,5 +1,5 @@
 import { AGE_FLAVOR } from '../connections/types';
-import { Server, _Server } from './types';
+import { Server, _Server } from './types/common';
 import { convertKeysToCamelCase } from '../util/snakeToCamel';
 
 export default class ServerService {

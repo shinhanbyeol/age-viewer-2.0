@@ -1,71 +1,10 @@
-import { AGE_FLAVOR } from './types';
-
-/**
- * @description Graphology json format
- * @see https://graphology.github.io/serialization.html#import
- */
-export type Vertex = {
-  key: string;
-  id: string;
-  label: string;
-  properties: {
-    [keys: string]: any;
-  };
-};
-
-export type Edge = {
-  key: string;
-  id: string;
-  label: string;
-  source: string;
-  target: string;
-  properties: {
-    [keys: string]: any;
-  };
-};
-
-export type GraphData = {
-  nodes: Vertex[];
-  edges: Edge[];
-};
-// --end group Graphology json format--
-
-/**
- * @description AgensGraph json format
- */
-type AgensVertexEdge = {
-  label: string;
-  start?: {
-    oid: string;
-    id: string;
-  };
-  end?: {
-    oid: string;
-    id: string;
-  };
-  id: {
-    oid: string;
-    id: string;
-  };
-  props: any;
-};
-
-type AGVerteEdgeRow = {
-  [keys: string]: AgensVertexEdge;
-};
-
-type AgensPath = {
-  vertices: AgensVertexEdge[];
-  edges: AgensVertexEdge[];
-};
-
-type Agensrow = AGVerteEdgeRow | AgensPath;
-
-interface AgensGraphResult {
-  fields: { name: string; dataTypeID: number }[];
-  rows: Agensrow[];
-}
-// --end group AgensGraph json format--
+import { AGE_FLAVOR } from './types/common';
+import {
+  AgensGraphResult,
+  AgensPath,
+  AgensVertexEdge,
+} from './types/cypher/agensgraph';
+import { GraphData } from './types/cypher/graphology';
 
 export default class CypherService {
   type: AGE_FLAVOR;
@@ -116,6 +55,39 @@ export default class CypherService {
     return resultSet.command;
   }
 
+  _convertAgensRowToResult(resultSet: AgensGraphResult): GraphData {
+    const nodes = [];
+    const edges = [];
+    resultSet.rows.forEach((row) => {
+      for (const [key, col] of Object.entries(row)) {
+        const type = col.constructor.name;
+        switch (type) {
+          case 'Vertex':
+            const vertex = this._convertVertexForAgensGraph(
+              col as AgensVertexEdge,
+            );
+            nodes.push(vertex);
+            break;
+          case 'Edge':
+            const edge = this._convertEdgeForAgensGraph(col as AgensVertexEdge);
+            edges.push(edge);
+            break;
+          case 'Path':
+            const path = this._convertPathForAgensGraph(col as AgensPath);
+            nodes.push(...path.nodes);
+            edges.push(...path.edges);
+            break;
+          default:
+            break;
+        }
+      }
+    });
+    return {
+      nodes,
+      edges,
+    };
+  }
+
   _convertAGERowToResult(resultSet) {
     return resultSet.rows.map((row) => {
       let convetedObject = {};
@@ -123,11 +95,11 @@ export default class CypherService {
         if (row[k]) {
           let typeName = row[k].constructor.name;
           if (typeName === 'Path') {
-            convetedObject[k] = this.convertPath(row[k]);
+            convetedObject[k] = this._convertPathForAGE(row[k]);
           } else if (typeName === 'Vertex') {
-            convetedObject[k] = this.convertVertex(row[k]);
+            convetedObject[k] = this._convertVertexForAGE(row[k]);
           } else if (typeName === 'Edge') {
-            convetedObject[k] = this.convertEdge(row[k]);
+            convetedObject[k] = this._convertEdgeForAGe(row[k]);
           } else {
             convetedObject[k] = row[k];
           }
@@ -139,77 +111,64 @@ export default class CypherService {
     });
   }
 
-  _convertAgensRowToResult(resultSet: AgensGraphResult) {
-    const nodes = [];
-    const edges = [];
-
-    resultSet.rows.forEach((row) => {
-      for (const [key, value] of Object.entries(row)) {
-        const type = value.constructor.name;
-
-        if (type === 'Vertex') {
-          const col = value as AgensVertexEdge;
-          nodes.push({
-            key: `${col.id.oid}.${value.id.id}`,
-            id: `${col.id.oid}.${value.id.id}`,
-            label: col.label,
-            properties: col.props,
-          });
-        } else if (type === 'Edge') {
-          const col = value as AgensVertexEdge;
-          edges.push({
-            key: `${col.id.oid}.${col.id.id}`,
-            id: `${col.id.oid}.${col.id.id}`,
-            label: col.label,
-            source: `${col.start.oid}.${col.start.id}`,
-            target: `${col.end.oid}.${col.end.id}`,
-            properties: col.props,
-          });
-        } else if (type === 'Path') {
-          const col = value as AgensPath;
-          col.vertices.forEach((vertex) => {
-            nodes.push({
-              key: `${vertex.id.oid}.${vertex.id.id}`,
-              id: `${vertex.id.oid}.${vertex.id.id}`,
-              label: vertex.label,
-              properties: vertex.props,
-            });
-          });
-          col.edges.forEach((edge) => {
-            edges.push({
-              key: `${edge.id.oid}.${edge.id.id}`,
-              id: `${edge.id.oid}.${edge.id.id}`,
-              label: edge.label,
-              source: `${edge.start.oid}.${edge.start.id}`,
-              target: `${edge.end.oid}.${edge.end.id}`,
-              properties: edge.props,
-            });
-          });
-        }
-      }
-    });
-
+  _convertVertexForAgensGraph(col: AgensVertexEdge) {
     return {
-      nodes,
-      edges,
+      key: `${col.id.oid}.${col.id.id}`,
+      id: `${col.id.oid}.${col.id.id}`,
+      label: col.label,
+      properties: col.props,
     };
   }
 
-  convertPath({ vertices, edges, start, end, len }) {
+  _convertEdgeForAgensGraph(col: AgensVertexEdge) {
+    return {
+      key: `${col.id.oid}.${col.id.id}`,
+      id: `${col.id.oid}.${col.id.id}`,
+      label: col.label,
+      source: `${col.start.oid}.${col.start.id}`,
+      target: `${col.end.oid}.${col.end.id}`,
+      properties: col.props,
+    };
+  }
+
+  _convertPathForAgensGraph(col: AgensPath) {
+    return {
+      nodes: col.vertices.map((vertex) => {
+        return {
+          key: `${vertex.id.oid}.${vertex.id.id}`,
+          id: `${vertex.id.oid}.${vertex.id.id}`,
+          label: vertex.label,
+          properties: vertex.props,
+        };
+      }),
+      edges: col.edges.map((edge) => {
+        return {
+          key: `${edge.id.oid}.${edge.id.id}`,
+          id: `${edge.id.oid}.${edge.id.id}`,
+          label: edge.label,
+          source: `${edge.start.oid}.${edge.start.id}`,
+          target: `${edge.end.oid}.${edge.end.id}`,
+          properties: edge.props,
+        };
+      }),
+    };
+  }
+
+  _convertPathForAGE({ vertices, edges, start, end, len }) {
     let result = [];
     // vertex
     for (let idx in vertices) {
-      result.push(this.convertVertex(vertices[idx]));
+      result.push(this._convertVertexForAGE(vertices[idx]));
     }
     // edge
     for (let idx in edges) {
-      result.push(this.convertEdge(edges[idx]));
+      result.push(this._convertEdgeForAGe(edges[idx]));
     }
 
     return result;
   }
 
-  convertEdge({ label, id, start, end, props }) {
+  _convertEdgeForAGe({ label, id, start, end, props }) {
     return {
       edge: true,
       label: label,
@@ -220,7 +179,7 @@ export default class CypherService {
     };
   }
 
-  convertVertex({ label, id, props }) {
+  _convertVertexForAGE({ label, id, props }) {
     return {
       node: true,
       label: label,

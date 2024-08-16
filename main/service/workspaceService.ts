@@ -1,6 +1,6 @@
 import path from 'path';
 import { convertKeysToCamelCase } from '../util/snakeToCamel';
-import { _Workspace, Workspace } from './types';
+import { _Workspace, Workspace } from './types/common';
 import { v4 as uuidv4 } from 'uuid';
 import { fileWrite } from './fileService';
 
