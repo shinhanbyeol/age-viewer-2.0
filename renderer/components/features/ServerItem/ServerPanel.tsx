@@ -48,7 +48,8 @@ const ServerPanel = ({ server }) => {
       connecting();
     } else {
       window.ipc.invoke('getGraphs', sessionId).then((res) => {
-        setGraphPaths(res);
+        const isArray = Array.isArray(res);
+        isArray && setGraphPaths(res);
       });
     }
   }, [sessionId]);
