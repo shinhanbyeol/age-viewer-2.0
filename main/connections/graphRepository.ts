@@ -1,6 +1,6 @@
 import { types as pgTypes, Pool as PgPool } from 'pg';
-import { Pool as AgensPool } from '@bitnine-oss/ag-driver';
-import { setAGETypes } from '../libs/node-age-pg/index.js';
+import { Pool as AgensPool } from 'node-agens-pg';
+import { setAGETypes } from 'node-age-pg';
 import { getQuery } from './ageFlavorManager';
 import { AGE_FLAVOR } from './types';
 
@@ -180,7 +180,6 @@ class ConnectionPool {
       result = await client.query(query);
       this.release(client);
     } catch (error) {
-      console.log(error);
       this.release(client);
       return error;
     }

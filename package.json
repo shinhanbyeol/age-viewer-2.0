@@ -6,6 +6,7 @@
   "author": "Hanbyeol Shin <sinhanbyeol@gmail.com>",
   "main": "app/background.js",
   "scripts": {
+    "libs": "cp -r dev_libs/* node_modules/",
     "dev": "nextron",
     "build": "nextron build",
     "postinstall": "electron-builder install-app-deps"

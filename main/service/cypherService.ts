@@ -38,11 +38,11 @@ export default class CypherService {
   }
 
   _getColumns(resultSet) {
-    return resultSet.fields.map((field) => field.name);
+    return resultSet?.fields?.map((field) => field.name);
   }
 
   _getRowCount(resultSet) {
-    return resultSet.rows.length;
+    return resultSet?.rows?.length ?? 0;
   }
 
   _getCommand(resultSet) {
@@ -52,7 +52,7 @@ export default class CypherService {
   _convertAgensRowToResult(resultSet: AgensGraphResult): GraphData {
     const nodes = [];
     const edges = [];
-    resultSet.rows.forEach((row) => {
+    resultSet?.rows?.forEach((row) => {
       for (const [key, col] of Object.entries(row)) {
         const type = col.constructor.name;
         switch (type) {
