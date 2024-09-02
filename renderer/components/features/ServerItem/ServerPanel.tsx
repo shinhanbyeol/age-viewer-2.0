@@ -1,6 +1,11 @@
-import { Accordion, ButtonSpinner } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
-import { createConnectionResponse, ServerResponse } from '../../../types';
+import {
+  createConnectionResponse,
+  IPCResponse,
+  ServerResponse,
+} from '../../../types';
+
+import { Accordion, ButtonSpinner } from '@chakra-ui/react';
 import { useServerOfSessionStore } from '../../../stores';
 import Graph from '../GraphItem';
 
@@ -23,13 +28,13 @@ const ServerPanel = ({ server }) => {
     setIsConnecting(true);
     await window.ipc
       .invoke('createConnnection', server)
-      .then((res: createConnectionResponse) => {
-        if (res.success) {
-          setSessionId(res.sessionId);
+      .then((res: IPCResponse<createConnectionResponse>) => {
+        if (res?.success) {
+          setSessionId(res.data.sessionId);
           addServerSession({
             id: server.id,
             type: server.serverType,
-            sessionId: res.sessionId,
+            sessionId: res.data.sessionId,
           });
         } else {
           setIsError(true);
@@ -47,10 +52,22 @@ const ServerPanel = ({ server }) => {
     if (!sessionId) {
       connecting();
     } else {
-      window.ipc.invoke('getGraphs', sessionId).then((res) => {
-        const isArray = Array.isArray(res);
-        isArray && setGraphPaths(res);
-      });
+      window.ipc
+        .invoke('getGraphs', sessionId)
+        .then((res: IPCResponse<any[]>) => {
+          if (res?.success) {
+            const isArray = Array.isArray(res.data);
+            if (isArray) {
+              setGraphPaths(res.data);
+            } else {
+              setIsError(true);
+              setErrorMessage(res.message);
+            }
+          } else {
+            setIsError(true);
+            setErrorMessage(res.message);
+          }
+        });
     }
   }, [sessionId]);
 

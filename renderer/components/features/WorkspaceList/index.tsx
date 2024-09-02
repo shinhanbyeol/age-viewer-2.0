@@ -1,6 +1,6 @@
 import { Box, Button, Container, Stack } from '@chakra-ui/react';
 import { memo, useEffect, useState } from 'react';
-import { ServerResponse, WorkspaceResponse } from '../../../types';
+import { IPCResponse, ServerResponse, WorkspaceResponse } from '../../../types';
 
 // Styles
 import Styles from './Workspace.module.scss';
@@ -44,8 +44,8 @@ const Workspace = ({ server, graph, sessionId }: WorkspaceProps) => {
         serverId: server.id,
         graph: graph,
       })
-      .then((res: WorkspaceResponse[]) => {
-        setWorkspaces(res.map((ws) => ws));
+      .then((res: IPCResponse<WorkspaceResponse[]>) => {
+        setWorkspaces(res?.data?.map((ws) => ws));
       });
   };
 
@@ -56,8 +56,7 @@ const Workspace = ({ server, graph, sessionId }: WorkspaceProps) => {
         graph: graph,
         name: values.workspaceName,
       })
-      .then((res) => {
-        console.log('createWorkspace', res);
+      .then((res: IPCResponse<null>) => {
         handleRefreshWorkspaces();
       });
   };

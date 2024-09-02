@@ -9,6 +9,13 @@ export enum AGE_FLAVOR {
 }
 
 // response types of ipc
+export interface IPCResponse<T> {
+  success: boolean;
+  error: boolean;
+  message: string;
+  stack: string | null;
+  data: T
+}
 
 // get server list response
 export interface ServerResponse {

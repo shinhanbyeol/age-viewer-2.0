@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-const agens = require('./agens.js');
+const agens = require("./agens.js");
 function makeParser(startRuleName) {
   return function (rawStr) {
     if (!rawStr) return null;
     return agens.parse(rawStr, {
-      startRule: startRuleName,
+      startRule: startRuleName
     });
   };
 }
@@ -50,8 +50,7 @@ dfltTypes.setTypeParser(7032, makeParser('_Path'));
 const overridePGENVConfig = function (key) {
   const uKey = key.toUpperCase();
   const val = process.env['AG' + uKey];
-  if (val) process.env['PG' + uKey] = val;
-  else delete process.env['PG' + uKey];
+  if (val) process.env['PG' + uKey] = val;else delete process.env['PG' + uKey];
 };
 overridePGENVConfig('USER');
 overridePGENVConfig('PASSWORD');
@@ -69,5 +68,4 @@ const AgensGraph = function () {
   this.Connection = this.pg.Connection;
 };
 module.exports = new AgensGraph();
-
 //# sourceMappingURL=index.js.map

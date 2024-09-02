@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { ServerResponse } from '../../../types';
+import { IPCResponse, ServerResponse } from '../../../types';
 import {
   AccordionItem,
   AccordionButton,
@@ -32,9 +32,16 @@ const Server = ({ server }: ServerProps) => {
    * @description Delete server
    */
   const handleDeleteServer = () => {
-    window.ipc.invoke('removeServer', server.id).then(() => {
-      window.dispatchEvent(new Event('agv:event:serverlist:refresh'));
-    });
+    window.ipc
+      .invoke('removeServer', server.id)
+      .then((res: IPCResponse<null>) => {
+        if (res?.success) {
+          alert('Server removed');
+          window.dispatchEvent(new Event('agv:event:serverlist:refresh'));
+        } else {
+          alert(res.message);
+        }
+      });
   };
 
   return (

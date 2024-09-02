@@ -1,4 +1,6 @@
 import React from 'react';
+import { AGE_FLAVOR, IPCResponse, ServerResponse } from '../../../types';
+
 import {
   ModalBody,
   ModalCloseButton,
@@ -17,7 +19,6 @@ import {
   Select,
 } from '@chakra-ui/react';
 import { Formik, Field, Form, FormikHelpers } from 'formik';
-import { AGE_FLAVOR, ServerResponse } from '../../../types';
 
 const EditServerModal = ({
   onClose,
@@ -55,18 +56,21 @@ const EditServerModal = ({
       database: string;
     }>,
   ) => {
-    const addSeverSuccess = await window.ipc.invoke('updateServer', {
-      id: String(server.id),
-      name: String(values.name),
-      host: String(values.host),
-      port: String(values.port),
-      database: String(values.database),
-      user: String(values.username),
-      password: String(values.password),
-      serverType: String(values.serverType) as AGE_FLAVOR,
-      version: String(values.version),
-    });
-    if (!addSeverSuccess) {
+    const editSeverSuccess: IPCResponse<null> = await window.ipc.invoke(
+      'updateServer',
+      {
+        id: String(server.id),
+        name: String(values.name),
+        host: String(values.host),
+        port: String(values.port),
+        database: String(values.database),
+        user: String(values.username),
+        password: String(values.password),
+        serverType: String(values.serverType) as AGE_FLAVOR,
+        version: String(values.version),
+      },
+    );
+    if (editSeverSuccess.error) {
       actions.setFieldError('name', 'Failed to add new server');
     }
     return true;

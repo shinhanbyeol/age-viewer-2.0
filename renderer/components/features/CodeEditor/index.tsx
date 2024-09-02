@@ -13,7 +13,7 @@ import Styles from './CodeEditor.module.scss';
 import { PiPlay } from 'react-icons/pi';
 import _, { debounce } from 'lodash';
 import useGraphology from '../../../hooks/useGraphology';
-import { ExecuteQueryResponseBy } from '../../../types';
+import { ExecuteQueryResponseBy, IPCResponse } from '../../../types';
 import { useGraphologyStore } from '../../../stores';
 
 interface CodeEditorProps {
@@ -61,7 +61,7 @@ const CodeEditor = ({
           filePath: workspaceSqlPath,
           fileData: value,
         })
-        .then((res) => {});
+        .then((res: IPCResponse<null>) => {});
     }, 500);
   }, [workspaceSqlPath]);
 
@@ -77,11 +77,12 @@ const CodeEditor = ({
           graph: graph,
           query: value,
         })
-        .then((res: ExecuteQueryResponseBy) => {
-          if (res) {
-            importGraphologyData(res.result);
-            setNodesCount(res.result.nodes.length);
-            setEdgesCount(res.result.edges.length);
+        .then((res: IPCResponse<ExecuteQueryResponseBy>) => {
+          if (res?.success) {
+            const queryResult = res.data;
+            importGraphologyData(queryResult.result);
+            setNodesCount(queryResult.result.nodes.length);
+            setEdgesCount(queryResult.result.edges.length);
             setLastExecutedTime(Date.now());
           }
         });
@@ -104,9 +105,17 @@ const CodeEditor = ({
   }, [handleClickOutside]);
 
   useEffect(() => {
-    window.ipc.invoke('readFile/fullPath', workspaceSqlPath).then((res) => {
-      typeof res === 'string' ? setCode(res) : setCode('');
-    });
+    window.ipc
+      .invoke('readFile/fullPath', workspaceSqlPath)
+      .then((res: IPCResponse<string>) => {
+        if (res?.success) {
+          typeof res.data === 'string'
+            ? setCode(res.data)
+            : setCode(res.message);
+        } else {
+          setCode(res.message);
+        }
+      });
   }, [workspaceSqlPath]);
 
   useEffect(() => {

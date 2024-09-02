@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import { ServerResponse } from '../../../types';
+import { IPCResponse, ServerResponse } from '../../../types';
 
 // styles
 import Styels from './HomeBar.module.scss';
@@ -25,9 +25,15 @@ const HomeBar = ({ visible }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const refreshServers = useCallback(() => {
-    window.ipc.invoke('getServers', null).then((res: ServerResponse[]) => {
-      setServers(res);
-    });
+    window.ipc
+      .invoke('getServers', null)
+      .then((res: IPCResponse<ServerResponse[]>) => {
+        if (res?.success) {
+          setServers(res.data);
+        } else {
+          alert(res.message);
+        }
+      });
   }, []);
 
   const handleModalOpen = (
