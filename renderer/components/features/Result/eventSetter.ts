@@ -10,8 +10,6 @@ export function eventSetter(renderer: Sigma) {
   renderer.on('downNode', (e) => {
     eventThis.isDragging = true;
     eventThis.dragedNode = e.node;
-    console.log('downNode');
-    console.log(eventThis.isDragging, eventThis.dragedNode);
   });
 
   // up node event
@@ -22,9 +20,6 @@ export function eventSetter(renderer: Sigma) {
   // mouse node move event
   renderer.getMouseCaptor().on('mousemovebody', (e) => {
     if (eventThis.isDragging && eventThis.draggedNode) {
-      console.log('isdrgging');
-      console.log(eventThis.dragedNode);
-      console.log(eventThis.isDragging);
       const pos = renderer.viewportToGraph(e);
 
       eventThis.graph.setNodeAttribute(eventThis.dragedNode, 'x', pos.x);

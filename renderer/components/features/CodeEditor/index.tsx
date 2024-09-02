@@ -174,6 +174,18 @@ const CodeEditor = ({
 
   return (
     <>
+      {fetching && (
+        <Box
+          backgroundColor={'#ffffff70'}
+          width={'100%'}
+          height={'100%'}
+          position={'absolute'}
+          top={0}
+          left={0}
+        >
+          <Progress size="xs" isIndeterminate />
+        </Box>
+      )}
       <div
         ref={rootRef}
         className={`${Styles.Root} ${expanded ? Styles.Expand : ''}`}
@@ -195,18 +207,6 @@ const CodeEditor = ({
             >
               Run Query
             </Button>
-            {fetching && (
-              <Box
-                backgroundColor={'#ffffff70'}
-                width={'100%'}
-                height={'100%'}
-                position={'absolute'}
-                top={0}
-                left={0}
-              >
-                <Progress size="xs" isIndeterminate />
-              </Box>
-            )}
           </Box>
         )}
         <div className={`${Styles.Editor}`}>

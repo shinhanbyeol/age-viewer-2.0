@@ -702,7 +702,6 @@ class IpcMainController {
             data: code,
           };
         } catch (error) {
-          console.log(error);
           return {
             success: false,
             error: true,

@@ -19,7 +19,6 @@ const Layout = ({ lastExecutedTime }: LayoutProps) => {
   const graphology = useGraphologyStore((state) => state.graphology);
 
   const _random = useCallback(() => {
-    console.log('random layout apply');
     random.assign(graphology, {
       scale: 0.1,
       center: 0,
