@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Progress } from '@chakra-ui/react';
 
 // Styles
 import Styles from './CodeEditor.module.scss';
@@ -29,6 +29,7 @@ const CodeEditor = ({
 }: CodeEditorProps) => {
   const [expanded, setExpanded] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
+  const [fetching, setFetching] = useState<boolean>(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const { importGraphologyData } = useGraphology();
   const { setEdgesCount, setNodesCount, setLastExecutedTime } =
@@ -70,8 +71,9 @@ const CodeEditor = ({
    * @param value
    */
   const handleRunQuery = useMemo(() => {
-    return debounce((value: string) => {
-      window.ipc
+    return debounce(async (value: string) => {
+      setFetching(true);
+      await window.ipc
         .invoke('excuteQuery', {
           sessionId: sessionId,
           graph: graph,
@@ -85,6 +87,9 @@ const CodeEditor = ({
             setEdgesCount(queryResult.result.edges.length);
             setLastExecutedTime(Date.now());
           }
+        })
+        .finally(() => {
+          setFetching(false);
         });
     }, 500);
   }, [
@@ -116,90 +121,107 @@ const CodeEditor = ({
       });
   }, [workspaceSqlPath]);
 
+  const _runQueryByShortcut = useCallback(
+    (e: KeyboardEvent) => {
+      // ctrl + enter or cmd + enter
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        handleRunQuery(code);
+      }
+      // press f5
+      if (e.key === 'F5') {
+        handleRunQuery(code);
+      }
+    },
+    [code, handleRunQuery],
+  );
+  const _expandEditorByShortcutEscape = useCallback(
+    (e: KeyboardEvent) => {
+      // press esc
+      if (e.key === 'Escape') {
+        setExpanded(false);
+      }
+    },
+    [setExpanded],
+  );
+  const _expandEditorByShortcutTab = useCallback(
+    (e: KeyboardEvent) => {
+      // press tab
+      if (e.key === 'Tab') {
+        setExpanded(true);
+      }
+    },
+    [setExpanded],
+  );
+
   useEffect(() => {
+    window.removeEventListener('keydown', _expandEditorByShortcutEscape);
+    window.removeEventListener('keydown', _expandEditorByShortcutTab);
     if (expanded) {
-      window.addEventListener('keydown', (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
-          setExpanded(false);
-        }
-      });
-      window.addEventListener('keydown', (e: KeyboardEvent) => {
-        // ctrl + enter or cmd + enter
-        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-          handleRunQuery(code);
-        }
-        // press f5
-        if (e.key === 'F5') {
-          handleRunQuery(code);
-        }
-      });
-      window.removeEventListener('keydown', (e: KeyboardEvent) => {
-        if (e.key === 'Tab') {
-          setExpanded(true);
-        }
-      });
+      window.addEventListener('keydown', _expandEditorByShortcutEscape);
     } else {
-      window.removeEventListener('keydown', (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
-          setExpanded(false);
-        }
-      });
-      window.removeEventListener('keydown', (e: KeyboardEvent) => {
-        // ctrl + enter or cmd + enter
-        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-          handleRunQuery(code);
-        }
-        // press f5
-        if (e.key === 'F5') {
-          handleRunQuery(code);
-        }
-      });
-      window.addEventListener('keydown', (e: KeyboardEvent) => {
-        if (e.key === 'Tab') {
-          setExpanded(true);
-        }
-      });
+      window.addEventListener('keydown', _expandEditorByShortcutTab);
     }
-  }, [expanded]);
+  }, [expanded, _expandEditorByShortcutEscape, _expandEditorByShortcutTab]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', _runQueryByShortcut);
+    return () => {
+      window.removeEventListener('keydown', _runQueryByShortcut);
+    };
+  }, [workspaceSqlPath, _runQueryByShortcut]);
 
   return (
-    <div
-      ref={rootRef}
-      className={`${Styles.Root} ${expanded ? Styles.Expand : ''}`}
-    >
-      {expanded && (
-        <Box
-          pl={'1rem'}
-          pr={'1rem'}
-          pb={2}
-          display={'flex'}
-          justifyContent={'flex-end'}
-        >
-          <Button
-            backgroundColor={'#63b3ed'}
-            leftIcon={<PiPlay />}
-            onClick={() => {
-              handleRunQuery(code);
-            }}
+    <>
+      <div
+        ref={rootRef}
+        className={`${Styles.Root} ${expanded ? Styles.Expand : ''}`}
+      >
+        {expanded && (
+          <Box
+            pl={'1rem'}
+            pr={'1rem'}
+            pb={2}
+            display={'flex'}
+            justifyContent={'flex-end'}
           >
-            Run Query
-          </Button>
-        </Box>
-      )}
-      <div className={`${Styles.Editor}`}>
-        <CodeMirror
-          value={code}
-          lang="cypher"
-          height="100%"
-          onFocus={handleOnFocusAtEditor}
-          onChange={(value) => {
-            setCode(value);
-            handleSaveSql(value);
-          }}
-        />
+            <Button
+              backgroundColor={'#63b3ed'}
+              leftIcon={<PiPlay />}
+              onClick={() => {
+                handleRunQuery(code);
+              }}
+            >
+              Run Query
+            </Button>
+            {fetching && (
+              <Box
+                backgroundColor={'#ffffff70'}
+                width={'100%'}
+                height={'100%'}
+                position={'absolute'}
+                top={0}
+                left={0}
+              >
+                <Progress size="xs" isIndeterminate />
+              </Box>
+            )}
+          </Box>
+        )}
+        <div className={`${Styles.Editor}`}>
+          <CodeMirror
+            value={code}
+            lang="cypher"
+            height="100%"
+            onFocus={handleOnFocusAtEditor}
+            onChange={(value) => {
+              setCode(value);
+              handleSaveSql(value);
+            }}
+          />
+        </div>
+        <Box></Box>
       </div>
-      <Box></Box>
-    </div>
+    </>
   );
 };
 
