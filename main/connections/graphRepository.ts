@@ -180,7 +180,7 @@ class ConnectionPool {
       this.release(client);
     } catch (error) {
       this.release(client);
-      return error;
+      throw error;
     }
     return result;
   }

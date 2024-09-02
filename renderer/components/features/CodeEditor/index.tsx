@@ -86,6 +86,8 @@ const CodeEditor = ({
             setNodesCount(queryResult.result.nodes.length);
             setEdgesCount(queryResult.result.edges.length);
             setLastExecutedTime(Date.now());
+          } else {
+            alert(res.message);
           }
         })
         .finally(() => {
