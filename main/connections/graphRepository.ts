@@ -101,9 +101,8 @@ class ConnectionPool {
     if (this.pool === null) return null;
     const client = await this.pool.connect();
     if (scheme && this.type === AGE_FLAVOR.AGE) {
-      console.log('==================================');
-      console.log(typeof setAGETypes);
       await setAGETypes(client, pgTypes as any);
+      await client.query(`SET search_path = ag_catalog, "$user", public;`);
     }
     if (scheme && this.type === AGE_FLAVOR.AGENSGRAPH) {
       await client.query(
