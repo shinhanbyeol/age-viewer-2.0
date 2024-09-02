@@ -109,11 +109,9 @@ const CodeEditor = ({
       .invoke('readFile/fullPath', workspaceSqlPath)
       .then((res: IPCResponse<string>) => {
         if (res?.success) {
-          typeof res.data === 'string'
-            ? setCode(res.data)
-            : setCode(res.message);
+          typeof res.data === 'string' ? setCode(res.data) : setCode('');
         } else {
-          setCode(res.message);
+          setCode('');
         }
       });
   }, [workspaceSqlPath]);
