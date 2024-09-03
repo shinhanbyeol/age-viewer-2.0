@@ -51,6 +51,7 @@ const AlertDialogBox = ({
 
             <AlertDialogFooter>
               <Button
+                variant={'ghost'}
                 ref={cancelRef}
                 onClick={() => {
                   onCancel();
@@ -59,7 +60,12 @@ const AlertDialogBox = ({
               >
                 {cancelText}
               </Button>
-              <Button colorScheme="red" onClick={onConfirm} ml={3}>
+              <Button
+                variant={'submit'}
+                colorScheme="red"
+                onClick={onConfirm}
+                ml={3}
+              >
                 {confirmText}
               </Button>
             </AlertDialogFooter>

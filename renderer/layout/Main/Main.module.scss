@@ -1,20 +1,15 @@
-.Root {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.Main {
   * {
     &::-webkit-scrollbar {
       width: 8px;
+      border-radius: 8px;
     }
     &::-webkit-scrollbar-track {
-      width: 8px;
+      width: 6px;
     }
     &::-webkit-scrollbar-thumb {
       background: black;
       border-radius: 24px;
-      &:hover {
-        cursor: pointer;
-        // scroll bar width 14px
-        width: 14px;
-      }
     }
   }
 }

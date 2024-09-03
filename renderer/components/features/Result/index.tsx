@@ -66,7 +66,13 @@ const Result = ({
         </SigmaContainer>
       ) : (
         <>
-          <Box fontSize={'4xl'} color={'#c4c4c4'} margin={'0 auto'} h={'12rem'}>
+          <Box
+            fontSize={'4xl'}
+            color={'gray'}
+            margin={'0 auto'}
+            h={'12rem'}
+            backgroundColor={'background'}
+          >
             Open editor to Press "Tab" key <br />
             Start writing your cypher query <br />
           </Box>

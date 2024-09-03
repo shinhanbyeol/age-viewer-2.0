@@ -23,6 +23,7 @@ const Graph = ({ graphPathName, server, sessionId }: GraphProps) => {
         <>
           <AccordionButton
             as={Button}
+            variant={'item'}
             width={'100%'}
             h={'1.5em'}
             pl={8}

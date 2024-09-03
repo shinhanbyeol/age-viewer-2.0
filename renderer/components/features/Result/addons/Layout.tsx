@@ -56,13 +56,14 @@ const Layout = ({ lastExecutedTime }: LayoutProps) => {
       top={0}
       padding={'0.5rem'}
       borderRadius={'8px'}
+      border={'1px solid gray'}
       backgroundColor={'#fff'}
-      border={'1px solid #e0e0e0'}
+      marginLeft={'1rem'}
       style={{
         height: 'auto',
       }}
     >
-      <Text color={'#101010'}>
+      <Text color={'black'}>
         <Text fontWeight={'bold'} float={'left'}>
           Layout :
         </Text>

@@ -14,10 +14,14 @@ export default function Debug() {
         <title>AGE-Viewer-2.0:debugger</title>
       </Head>
       <Main>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}>          
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            padding: '1rem',
+          }}
+        >
           <Text fontSize={'4xl'}>IPC test Result</Text>
           <Debugger />
         </div>

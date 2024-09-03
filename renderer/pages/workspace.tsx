@@ -73,7 +73,11 @@ function WorkspacePage() {
       </Head>
       <Main>
         <Stack h={'100%'} direction={'column'}>
-          <Breadcrumb backgroundColor={'#63b3ed50'} color={'#00'}>
+          <Breadcrumb
+            backgroundColor={'black'}
+            color={'white'}
+            paddingLeft={'1rem'}
+          >
             <BreadcrumbItem>
               <Text fontSize={'small'}>{serverName}</Text>
             </BreadcrumbItem>

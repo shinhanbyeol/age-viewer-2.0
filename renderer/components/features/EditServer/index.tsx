@@ -316,7 +316,7 @@ const EditServerModal = ({
               <Button variant="ghost" mr={3} onClick={onClose}>
                 Close
               </Button>
-              <Button type="submit" isLoading={props.isSubmitting}>
+              <Button variant="submit" type="submit" isLoading={props.isSubmitting}>
                 Confirm
               </Button>
             </ModalFooter>

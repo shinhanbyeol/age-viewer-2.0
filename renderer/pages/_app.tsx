@@ -26,9 +26,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           width={1}
           height={'100vh'}
           _hover={{
-            bg: 'blue.500',
+            bg: 'black',
             cursor: 'ew-resize',
           }}
+          marginRight={'-4px'}
           {...separatorProps}
         />
         <Component {...pageProps} />

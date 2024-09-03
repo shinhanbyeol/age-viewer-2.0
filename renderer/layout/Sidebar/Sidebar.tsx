@@ -11,16 +11,21 @@ interface SidebarProps {
   x: number;
 }
 
-const MenuItemBox = forwardRef<BoxProps, 'div'>((props, ref) => (
+const MenuItemBox = forwardRef<
+  {
+    active?: boolean;
+  } & BoxProps,
+  'div'
+>((props, ref) => (
   <Box
     width={50}
     height={50}
-    bg="#212121"
+    bg={props.active ? 'background' : 'black'}
     textAlign={'center'}
     p={'25%'}
     fontSize={'x-large'}
     _hover={{
-      bg: 'linear-gradient(51deg, rgba(14,127,254,1) 11%, rgba(19,127,255,1) 50%);',
+      bg: 'background',
       cursor: 'pointer',
     }}
     {...props}
@@ -33,15 +38,22 @@ export const Sidebar = ({ x }: SidebarProps) => {
   const router = useRouter();
 
   return (
-    <Box className={Styles.Root} minW={240} width={x} resize="both">
+    <Box
+      className={Styles.Root}
+      minW={240}
+      width={x}
+      resize="both"
+      backgroundColor={'background'}
+    >
       <Flex direction="row" justify="flex-start" align="center">
         <Flex
           minW={50}
           height={'100vh'}
           direction="column"
-          backgroundColor={'#212121'}
+          backgroundColor={'black'}
         >
           <MenuItemBox
+            active={sidebar === 'home'}
             onClick={() => {
               setSidebar('home');
               // router.push('/home');
@@ -50,6 +62,7 @@ export const Sidebar = ({ x }: SidebarProps) => {
             <Icon as={FcHome} />
           </MenuItemBox>
           <MenuItemBox
+            active={sidebar === 2}
             onClick={() => {
               setSidebar(2);
             }}
@@ -57,6 +70,7 @@ export const Sidebar = ({ x }: SidebarProps) => {
             <Icon as={FcEditImage} />
           </MenuItemBox>
           <MenuItemBox
+            active={sidebar === 3}
             onClick={() => {
               setSidebar(3);
             }}
@@ -64,6 +78,7 @@ export const Sidebar = ({ x }: SidebarProps) => {
             3
           </MenuItemBox>
           <MenuItemBox
+            active={sidebar === 'debug'}
             onClick={() => {
               setSidebar('debug');
               router.push('/debug');

@@ -1,39 +1,84 @@
-import { extendTheme } from '@chakra-ui/react'
+import {
+  Button,
+  StyleFunctionProps,
+  background,
+  baseTheme,
+  border,
+  extendTheme,
+} from '@chakra-ui/react';
+import { color } from 'framer-motion';
 
-const fonts = { mono: `'Menlo', monospace` }
+const fonts = { mono: `'Menlo', monospace` };
 
 const breakpoints = {
   sm: '40em',
   md: '52em',
   lg: '64em',
   xl: '80em',
-}
+};
 
 const theme = extendTheme({
-  semanticTokens: {
-    colors: {
-      text: {
-        default: '#16161D',
-        _dark: '#ade3b8',
-      },
-      heroGradientStart: {
-        default: '#7928CA',
-        _dark: '#e3a7f9',
-      },
-      heroGradientEnd: {
-        default: '#FF0080',
-        _dark: '#fbec8f',
-      },
-    },
-    radii: {
-      button: '12px',
-    },
-  },
   colors: {
     black: '#16161D',
+    background: '#FBFCF8',
+    gray: '#A0A0A0',
   },
   fonts,
   breakpoints,
-})
+  components: {
+    Button: {
+      // 1. We can update the base styles
+      baseStyle: {
+        fontWeight: 'bold', // Normally, it is "semibold"
+      },
+      // 2. We can add a new button size or extend existing
+      sizes: {
+        xl: {
+          h: '56px',
+          fontSize: 'lg',
+          px: '32px',
+        },
+      },
+      // 3. We can add a new visual variant
+      variants: {
+        button: {
+          bg: 'transparent',
+          color: 'black',
+          _hover: {
+            bg: 'black',
+            color: 'white',
+          },
+        },
+        item: {
+          bg: 'transparent',
+          color: 'black',
+          _hover: {
+            bg: '#F3F4F6',
+          },
+        },
+        ghost: {
+          bg: 'transparent',
+          color: 'black',
+          _hover: {
+            bg: '#F3F4F6',
+          },
+        },
+        submit: {
+          bg: 'transparent',
+          color: 'black',
+          border: '1px solid black',
+          _hover: {
+            bg: 'black',
+            color: 'white',
+          },
+        },
+      },
+      // 6. We can overwrite defaultProps
+      defaultProps: {
+        variant: 'button', // default is solid
+      },
+    },
+  },
+});
 
-export default theme
+export default theme;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Select, Button, Text, Textarea } from '@chakra-ui/react';
+import { Select, Button, Text, Textarea, Box } from '@chakra-ui/react';
 import { useDebugStore } from '../../../stores';
 import {
   DEBUGGERLIST,
@@ -54,14 +54,12 @@ const IpcDebugger = ({ visible }: IpcDebuggerProps) => {
   };
 
   return (
-    <div
-      style={{
-        display: visible ? 'flex' : 'none',
-        flexDirection: 'column',
-        width: '100%',
-        backgroundColor: '#f5f5f5',
-        padding: '1rem',
-      }}
+    <Box
+      display={visible ? 'flex' : 'none'}
+      flexDirection={'column'}
+      width={'100%'}
+      backgroundColor={'background'}
+      padding={'1rem'}
     >
       <Text fontSize={'4xl'}>AGE-Viewer-2.0 IPC Debugger</Text>
       <Select onChange={handleSelectChange} value={tester}>
@@ -84,9 +82,9 @@ const IpcDebugger = ({ visible }: IpcDebuggerProps) => {
       <Textarea
         style={{
           height: '18.75rem',
-          backgroundColor: '#fff',
           border: '1px solid #ccc',
         }}
+        backgroundColor={'#fff'}
         value={parmField}
         defaultValue={param ? JSON.stringify(param, null, 2) : ''}
         onChange={handleOnChangeParams}
@@ -94,7 +92,7 @@ const IpcDebugger = ({ visible }: IpcDebuggerProps) => {
       <br />
       <br />
       <Button onClick={handleExecuteTest}>Click me test</Button>
-    </div>
+    </Box>
   );
 };
 

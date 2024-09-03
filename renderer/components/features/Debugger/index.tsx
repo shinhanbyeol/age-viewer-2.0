@@ -1,30 +1,28 @@
 'use client';
-import { Button, Text, Textarea } from '@chakra-ui/react';
 import { useDebugStore } from '../../../stores';
-import { DEBUGGER_SAMPLE_PARAMS } from '../../../constants/debugFeat';
-import { useEffect, useState } from 'react';
+import { Box } from '@chakra-ui/react';
 
 const Debugger = () => {
   const { result } = useDebugStore();
 
   return (
-    <div
-      style={{
-        flex: 1,
-        padding: '10px',
-        backgroundColor: '#f5f5f5',
-      }}
+    <Box
+      display={'flex'}
+      padding={'10px'}
+      backgroundColor={'#fff'}
+      border={'solid 1px black'}
+      borderRadius={'8px'}
+      overflow={'auto'}
+      width={'100%'}
     >
       <pre
         style={{
-          backgroundColor: '#f5f5f5',
-          borderRadius: '5px',
-          overflow: 'auto',
+          width: '100%',
         }}
       >
         <code>{JSON.stringify(result, null, 2)}</code>
       </pre>
-    </div>
+    </Box>
   );
 };
 

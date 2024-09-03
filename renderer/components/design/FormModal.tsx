@@ -82,7 +82,7 @@ const FormModal = ({
       >
         {(props) => (
           <Form>
-            <ModalContent>
+            <ModalContent backgroundColor={'background'}>
               <ModalHeader>{title}</ModalHeader>
               {children && children}
               <ModalBody>
@@ -119,7 +119,11 @@ const FormModal = ({
                 >
                   {cancelText}
                 </Button>
-                <Button type="submit" isLoading={props.isSubmitting}>
+                <Button
+                  variant={'button'}
+                  type="submit"
+                  isLoading={props.isSubmitting}
+                >
                   {confirmText}
                 </Button>
               </ModalFooter>

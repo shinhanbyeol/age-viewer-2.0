@@ -87,6 +87,7 @@ const Server = ({ server }: ServerProps) => {
                 <h3 ref={ref}>
                   <AccordionButton
                     as={Button}
+                    variant={'item'}
                     h={'1.5em'}
                     justifyContent={'space-between'}
                     leftIcon={

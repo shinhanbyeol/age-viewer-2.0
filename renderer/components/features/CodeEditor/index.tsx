@@ -176,14 +176,14 @@ const CodeEditor = ({
     <>
       {fetching && (
         <Box
-          backgroundColor={'#ffffff70'}
+          backgroundColor="rgba(255, 255, 255, 0.5)"
           width={'100%'}
           height={'100%'}
           position={'absolute'}
           top={0}
           left={0}
         >
-          <Progress size="xs" isIndeterminate />
+          <Progress size="xs" isIndeterminate colorScheme={'black'}/>
         </Box>
       )}
       <div
@@ -199,7 +199,7 @@ const CodeEditor = ({
             justifyContent={'flex-end'}
           >
             <Button
-              backgroundColor={'#63b3ed'}
+              variant={'submit'}
               leftIcon={<PiPlay />}
               onClick={() => {
                 handleRunQuery(code);
