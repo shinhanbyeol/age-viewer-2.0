@@ -24,7 +24,8 @@ It will be developed to support Mac OS X, Windows, and Linux.
 
 1. clone this repository
 2. run `yarn install`
-3. run `yarn dev`
+3. run `yarn libs`
+4. run `yarn dev`
 
 ## Code convention
 
