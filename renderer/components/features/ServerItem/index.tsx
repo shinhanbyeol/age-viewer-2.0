@@ -61,7 +61,7 @@ const Server = ({ server }: ServerProps) => {
           setRemoveAlert(() => wakeupFunction);
         }}
       />
-      <AccordionItem>
+      <AccordionItem border={'none'}>
         {({ isExpanded }) => (
           <>
             <ContextMenu<HTMLDivElement>

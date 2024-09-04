@@ -4,6 +4,7 @@ import {
   AccordionButton,
   AccordionPanel,
   Button,
+  Text
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { PiGraph } from 'react-icons/pi';
@@ -18,7 +19,7 @@ interface GraphProps {
 
 const Graph = ({ graphPathName, server, sessionId }: GraphProps) => {
   return (
-    <AccordionItem>
+    <AccordionItem border={'none'}>
       {({ isExpanded }) => (
         <>
           <AccordionButton
@@ -32,7 +33,7 @@ const Graph = ({ graphPathName, server, sessionId }: GraphProps) => {
             justifyContent={'space-between'}
             textOverflow={'ellipsis'}
           >
-            {graphPathName}
+            <Text flex={1} textAlign={'left'}>{graphPathName}</Text>
           </AccordionButton>
           {isExpanded && (
             <AccordionPanel p={0}>

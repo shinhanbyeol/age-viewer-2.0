@@ -70,7 +70,7 @@ const Workspace = ({ server, graph, sessionId }: WorkspaceProps) => {
   }, []);
 
   return (
-    <Stack direction={'column'}>
+    <Stack direction={'column'} gap={0}>
       <FormModal
         initialValues={{ workspaceName: '' }}
         cancelText="Cancel"
@@ -86,6 +86,7 @@ const Workspace = ({ server, graph, sessionId }: WorkspaceProps) => {
         <Button
           h={'1.5rem'}
           width={'100%'}
+          ml={'1.5rem'}
           justifyContent={'flex-start'}
           onClick={openNewWorkspaceForm}
         >
@@ -95,11 +96,14 @@ const Workspace = ({ server, graph, sessionId }: WorkspaceProps) => {
       <Container p={0} pl={12}>
         {workspaces.map((workspace, index) => {
           return (
-            <Box key={`ws-${index}`} w={'100%'}>
+            <Box
+              key={`ws-${index}`}
+              w={'100%'}
+              bgColor={clickedWorkspace === index ? 'black.alpha.10' : ''}
+              color={clickedWorkspace === index ? 'black' : ''}
+            >
               <a
-                className={`${Styles.WorkspaceItem} ${
-                  clickedWorkspace === index ? Styles.Active : ''
-                }`}
+                className={`${Styles.WorkspaceItem}`}
                 onClick={(e) => {
                   e.preventDefault();
                   setClickedWorkspace(index);
