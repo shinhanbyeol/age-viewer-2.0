@@ -62,9 +62,9 @@ export const Sidebar = ({ x }: SidebarProps) => {
             <Icon as={FcHome} />
           </MenuItemBox>
           <MenuItemBox
-            active={sidebar === 2}
+            active={sidebar === 'designer'}
             onClick={() => {
-              setSidebar(2);
+              setSidebar('designer');
             }}
           >
             <Icon as={FcEditImage} />

@@ -32,7 +32,7 @@ const CodeEditor = ({
   const [fetching, setFetching] = useState<boolean>(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const { importGraphologyData } = useGraphology();
-  const { setEdgesCount, setNodesCount, setLastExecutedTime } =
+  const { setEdgesCount, setNodesCount, setLastExecutedTime, setLabels } =
     useGraphologyStore();
 
   const handleOnFocusAtEditor = () => {
@@ -52,7 +52,7 @@ const CodeEditor = ({
   );
 
   /**
-   * @description Save SQL file
+   * @description Save SQL
    * @param value
    */
   const handleSaveSql = useMemo(() => {
@@ -83,6 +83,7 @@ const CodeEditor = ({
           if (res?.success) {
             const queryResult = res.data;
             importGraphologyData(queryResult.result);
+            setLabels(queryResult.labels);
             setNodesCount(queryResult.result.nodes.length);
             setEdgesCount(queryResult.result.edges.length);
             setLastExecutedTime(Date.now());
@@ -183,7 +184,7 @@ const CodeEditor = ({
           top={0}
           left={0}
         >
-          <Progress size="xs" isIndeterminate colorScheme={'black'}/>
+          <Progress size="xs" isIndeterminate colorScheme={'black'} />
         </Box>
       )}
       <div

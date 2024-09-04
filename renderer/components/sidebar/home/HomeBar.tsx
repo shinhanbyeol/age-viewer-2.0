@@ -20,7 +20,7 @@ interface HomeBarProps {
   visible: boolean;
 }
 
-const HomeBar = ({ visible }) => {
+const HomeBar = ({ visible }: HomeBarProps) => {
   const [servers, setServers] = useState<ServerResponse[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 

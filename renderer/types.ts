@@ -14,7 +14,7 @@ export interface IPCResponse<T> {
   error: boolean;
   message: string;
   stack: string | null;
-  data: T
+  data: T;
 }
 
 // get server list response
@@ -56,6 +56,7 @@ export interface WorkspaceResponse {
 // AgensGraph
 export interface ExecuteQueryResponseBy {
   columns: string[];
+  labels: string[];
   command: string;
   rowCount: number;
   result: GraphData;

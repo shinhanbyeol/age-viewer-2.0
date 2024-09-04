@@ -3,8 +3,10 @@ import { AGE_FLAVOR } from './types/common';
 
 export default class CypherService {
   type: AGE_FLAVOR;
+  labels: Set<string>;
   constructor(type) {
     this.type = type;
+    this.labels = new Set();
   }
   createResult(resultSet) {
     let result;
@@ -31,6 +33,7 @@ export default class CypherService {
     }
     result = {
       result: cypherRow,
+      labels: Array.from(this.labels),
       columns: this._getColumns(targetItem),
       rowCount: this._getRowCount(targetItem),
       command: this._getCommand(targetItem),
@@ -97,6 +100,17 @@ export default class CypherService {
   }
 
   /**
+   * @description Set Summary Labels Count
+   * @param {string} label
+   */
+  _setSummaryLabels(label: string) {
+    const isAllreadySet = this.labels.has(label);
+    if (!isAllreadySet) {
+      this.labels.add(label);
+    }
+  }
+
+  /**
    * AGE Converters
    */
   _convertVertexForAGE({ label, id, properties }) {
@@ -152,10 +166,12 @@ export default class CypherService {
             const vertex = this._convertVertexForAgensGraph(
               col as AgensVertexEdge,
             );
+            this._setSummaryLabels(vertex.label);
             nodes.push(vertex);
             break;
           case 'Edge':
             const edge = this._convertEdgeForAgensGraph(col as AgensVertexEdge);
+            this._setSummaryLabels(edge.label);
             edges.push(edge);
             break;
           case 'Path':
@@ -197,6 +213,7 @@ export default class CypherService {
             // map to json
             const { n, e } = this._convertPathForAGE(col);
             n.forEach((_node) => {
+              this._setSummaryLabels(_node.label);
               nodes.push({
                 key: _node.id,
                 id: _node.id,
@@ -205,6 +222,7 @@ export default class CypherService {
               });
             });
             e.forEach((_edge) => {
+              this._setSummaryLabels(_edge.label);
               edges.push({
                 key: _edge.id,
                 id: _edge.id,
@@ -216,6 +234,7 @@ export default class CypherService {
             });
           } else if (typeName === 'Vertex') {
             const _node = this._convertVertexForAGE(col);
+            this._setSummaryLabels(_node.label);
             nodes.push({
               key: _node.id,
               id: _node.id,
@@ -224,6 +243,7 @@ export default class CypherService {
             });
           } else if (typeName === 'Edge') {
             const _edge = this._convertEdgeForAGE(col);
+            this._setSummaryLabels(_edge.label);
             edges.push({
               key: _edge.id,
               id: _edge.id,

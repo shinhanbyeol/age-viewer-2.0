@@ -14,9 +14,12 @@ import CodeEditor from '../components/features/CodeEditor';
 import Result from '../components/features/Result';
 import useGraphology from '../hooks/useGraphology';
 import { useGraphologyStore } from '../stores';
+import { useWorkspaceStore } from '../stores/workspaceStore';
 
 function WorkspacePage() {
   const router = useRouter();
+  const { setWorkspace, setWorkspaceJsonPath, setWorkspaceSqlPath } =
+    useWorkspaceStore();
   const {
     serverId,
     serverName,
@@ -55,6 +58,9 @@ function WorkspacePage() {
   // initialize the graphology
   useEffect(() => {
     init(workspaceName as string, graph as string, Number(serverId));
+    setWorkspace(workspaceName as string);
+    setWorkspaceJsonPath(workspaceJsonPath as string);
+    setWorkspaceSqlPath(workspaceSqlPath as string);
     setLastInitTime(Date.now());
   }, [
     serverId,
