@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGraphologyStore } from '../../../stores';
 import { SigmaContainer } from '@react-sigma/core';
 import Styles from './Result.module.scss';
@@ -7,7 +7,12 @@ import MouseEvent from './addons/MouseEvent';
 import ExecutedEvent from './addons/ExecutedEvent';
 import Layout from './addons/Layout';
 import Control from './addons/Control';
-import { size } from 'lodash';
+import {
+  useWorkspaceStore,
+  DesignerSettings,
+} from '../../../stores/workspaceStore';
+import { entries, size } from 'lodash';
+import { color } from 'framer-motion';
 
 const Result = ({
   workspaceName,
@@ -23,6 +28,8 @@ const Result = ({
   sessionId: string;
 }) => {
   const graphology = useGraphologyStore((state) => state.graphology);
+  const { designer } = useWorkspaceStore();
+
   const lastExecutedTime = useGraphologyStore(
     (state) => state.lastExecutedTime,
   );
@@ -52,10 +59,28 @@ const Result = ({
               return ratio;
             },
             nodeReducer: (node, attr) => {
+              const text = designer[attr.label as string]?.text || undefined;
+              const convertedLabel = attr.properties[text]
+                ? attr?.properties[text]
+                : attr.label;
               const nodeStyledata = {
-                size: 20,
+                size: designer[attr.label as string]?.size * 10 || 1 * 10,
+                color: designer[attr.label as string]?.color || '#000',
+                label: convertedLabel,
               };
-              return { ...attr, ...nodeStyledata };
+              return { ...attr, label: convertedLabel, ...nodeStyledata };
+            },
+            edgeReducer: (edge, attr) => {
+              const text = designer[attr.label as string]?.text || undefined;
+              const convertedLabel = attr.properties[text]
+                ? attr?.properties[text]
+                : attr.label;
+              const edgeStyledata = {
+                size: designer[attr.label as string]?.size * 3.25 || 1 * 3.25,
+                color: designer[attr.label as string]?.color || '#000',
+                label: convertedLabel,
+              };
+              return { ...attr, label: convertedLabel, ...edgeStyledata };
             },
           }}
         >

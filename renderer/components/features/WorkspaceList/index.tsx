@@ -1,4 +1,4 @@
-import { Box, Button, Container, Stack } from '@chakra-ui/react';
+import { Box, Button, Container, Stack, Text } from '@chakra-ui/react';
 import { memo, useEffect, useState } from 'react';
 import { IPCResponse, ServerResponse, WorkspaceResponse } from '../../../types';
 
@@ -74,25 +74,14 @@ const Workspace = ({ server, graph, sessionId }: WorkspaceProps) => {
       <FormModal
         initialValues={{ workspaceName: '' }}
         cancelText="Cancel"
-        confirmText="Create workspace"
+        confirmText="Create page"
         onCloseEvent={() => {}}
         onSubmit={handleNewWorkspace}
-        title="Create new workspace"
+        title="Create new page"
         wakeupFormModal={(wakeupFunction) => {
           setShowNewWorkspaceModal(() => wakeupFunction);
         }}
       />
-      <Container>
-        <Button
-          h={'1.5rem'}
-          width={'100%'}
-          ml={'1.5rem'}
-          justifyContent={'flex-start'}
-          onClick={openNewWorkspaceForm}
-        >
-          + New workspace
-        </Button>
-      </Container>
       <Container p={0} pl={12}>
         {workspaces.map((workspace, index) => {
           return (
@@ -116,6 +105,18 @@ const Workspace = ({ server, graph, sessionId }: WorkspaceProps) => {
             </Box>
           );
         })}
+      </Container>
+      <Container>
+        <Button
+          h={'1.5rem'}
+          width={'100%'}
+          ml={'1.5rem'}
+          justifyContent={'flex-start'}
+          onClick={openNewWorkspaceForm}
+          fontSize={'sm'}
+        >
+          + New page
+        </Button>
       </Container>
     </Stack>
   );

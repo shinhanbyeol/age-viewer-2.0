@@ -592,7 +592,6 @@ class IpcMainController {
         },
       ): Promise<HandleResponse<null>> => {
         try {
-          console.log('writeFile/fullPath', payload.fileData);
           await fs.writeFileSync(payload.filePath, payload.fileData);
         } catch (err) {
           return {

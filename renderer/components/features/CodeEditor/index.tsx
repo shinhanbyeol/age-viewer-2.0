@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-import { Box, Button, Progress } from '@chakra-ui/react';
+import { Box, Button, Progress, Text } from '@chakra-ui/react';
 
 // Styles
 import Styles from './CodeEditor.module.scss';
@@ -34,6 +34,8 @@ const CodeEditor = ({
   const { importGraphologyData } = useGraphology();
   const { setEdgesCount, setNodesCount, setLastExecutedTime, setLabels } =
     useGraphologyStore();
+
+  const OS = navigator.platform;
 
   const handleOnFocusAtEditor = () => {
     setExpanded(true);
@@ -201,12 +203,18 @@ const CodeEditor = ({
           >
             <Button
               variant={'submit'}
+              size={'xl'}
               leftIcon={<PiPlay />}
               onClick={() => {
                 handleRunQuery(code);
               }}
             >
-              Run Query
+              <Box display={'flex'} alignItems={'center'} flexDir={'column'} gap={1}>
+                <Text>Run Query</Text>
+                <Text fontSize={'xs'} color={'gray'} display={'block'}>
+                  {OS === 'MacIntel' ? ' (Cmd + Enter)' : ' (Ctrl + Enter)'}
+                </Text>
+              </Box>
             </Button>
           </Box>
         )}

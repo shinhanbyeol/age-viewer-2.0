@@ -61,7 +61,7 @@ const useGraphology = () => {
         graphology.mergeNode(node.key, {
           id: node.id,
           label: node.label,
-          propperties: node.properties,
+          properties: node.properties,
           x: 0,
           y: 0,
         });
@@ -69,6 +69,7 @@ const useGraphology = () => {
       data.edges.forEach((edge) => {
         graphology.mergeEdgeWithKey(edge.key, edge.source, edge.target, {
           id: edge.id,
+          type: 'arrow',
           label: edge.label,
           properties: edge.properties,
         });

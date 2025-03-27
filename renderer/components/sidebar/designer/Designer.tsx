@@ -15,6 +15,7 @@ import { useGraphologyStore } from '../../../stores';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useWorkspaceStore } from '../../../stores/workspaceStore';
 import { IPCResponse } from '../../../types';
+import { debounce } from 'lodash';
 
 interface DesignerProps {
   visible: boolean;
@@ -23,14 +24,13 @@ interface DesignerProps {
 const Desinger = ({ visible }: DesignerProps) => {
   const { labels } = useGraphologyStore();
   const [selectedLabel, setSelectedLabel] = useState<string>('');
-  const { desginer, workspaceJsonPath, setDesginer } = useWorkspaceStore();
+  const { designer, workspaceJsonPath, initDesigner, setDesigner } =
+    useWorkspaceStore();
 
   const currentSettings = useMemo(
     () =>
-      Object(desginer)[selectedLabel]
-        ? Object(desginer)[selectedLabel]
-        : { color: null, text: null, size: 1 },
-    [],
+      Object(designer)[selectedLabel] ? Object(designer)[selectedLabel] : {},
+    [selectedLabel, designer],
   );
 
   const handleSelect = useCallback(
@@ -42,11 +42,23 @@ const Desinger = ({ visible }: DesignerProps) => {
 
   const handleOnChangeSetting = useCallback(
     (option, value) => {
+      if (!selectedLabel) return;
       const _settings = Object.assign({}, currentSettings);
       _settings[option] = value;
-      setDesginer(selectedLabel, _settings);
+      setDesigner(selectedLabel, _settings);
     },
-    [currentSettings],
+    [currentSettings, selectedLabel],
+  );
+
+  const handleOnChangeSettingDebounce = useMemo(
+    () =>
+      debounce((option, value) => {
+        if (!selectedLabel) return;
+        const _settings = Object.assign({}, currentSettings);
+        _settings[option] = value;
+        setDesigner(selectedLabel, _settings);
+      }, 500),
+    [currentSettings, selectedLabel],
   );
 
   const updateSettings = useCallback(() => {
@@ -54,7 +66,7 @@ const Desinger = ({ visible }: DesignerProps) => {
       .invoke('writeFile/fullPath', {
         filePath: workspaceJsonPath,
         fileData: JSON.stringify({
-          ...desginer,
+          ...designer,
         }),
       })
       .then((res: IPCResponse<null>) => {
@@ -62,7 +74,34 @@ const Desinger = ({ visible }: DesignerProps) => {
           alert(res.message);
         }
       });
-  }, [workspaceJsonPath, desginer]);
+  }, [workspaceJsonPath, designer]);
+
+  const loadSettings = useCallback(() => {
+    if (!workspaceJsonPath) return;
+    window.ipc
+      .invoke('readFile/fullPath', workspaceJsonPath)
+      .then((res: IPCResponse<string>) => {
+        if (res?.error) {
+          initDesigner({});
+        } else {
+          const loadedSettings = JSON.parse(res.data);
+          initDesigner(loadedSettings);
+        }
+      });
+  }, [workspaceJsonPath]);
+
+  useEffect(() => {
+    setSelectedLabel('');
+    if (workspaceJsonPath) {
+      loadSettings();
+    }
+  }, [workspaceJsonPath]);
+
+  useEffect(() => {
+    if (workspaceJsonPath) {
+      updateSettings();
+    }
+  }, [designer]);
 
   return (
     <VStack
@@ -80,7 +119,13 @@ const Desinger = ({ visible }: DesignerProps) => {
       <Text fontWeight="bold">Graph Designer</Text>
       <Box>
         <FormLabel>Labels</FormLabel>
-        <Select onChange={handleSelect}>
+        <Select
+          onChange={handleSelect}
+          defaultValue={null}
+          value={selectedLabel}
+          unselectable="on"
+          placeholder="Select Label..."
+        >
           {labels.map((label) => (
             <option key={label} value={label}>
               {label}
@@ -90,34 +135,38 @@ const Desinger = ({ visible }: DesignerProps) => {
       </Box>
 
       <Box>
-        <FormLabel>Color</FormLabel>
+        <FormLabel color={!selectedLabel ? '#c4c4c4' : ''}>Color</FormLabel>
         <Input
           type="color"
-          // defaultValue={currentSettings.color}
+          value={currentSettings.color ?? '#000'}
           onChange={(e) => {
-            handleOnChangeSetting('color', e.target.value);
+            handleOnChangeSettingDebounce('color', e.target.value);
           }}
+          disabled={!selectedLabel}
         />
       </Box>
 
       <Box>
-        <FormLabel>Text</FormLabel>
+        <FormLabel color={!selectedLabel ? '#c4c4c4' : ''}>Text</FormLabel>
         <Input
           type="text"
-          // defaultValue={currentSettings.text ?? ''}
+          value={currentSettings.text ?? ''}
           onChange={(e) => {
-            handleOnChangeSetting('color', e.target.value);
+            handleOnChangeSetting('text', e.target.value);
           }}
+          disabled={!selectedLabel}
         />
       </Box>
 
       <Box>
-        <FormLabel>Size</FormLabel>
+        <FormLabel color={!selectedLabel ? '#c4c4c4' : ''}>
+          Size: {currentSettings.size}
+        </FormLabel>
         <Slider
           min={1}
           max={10}
           aria-label="slider-ex-1"
-          // defaultValue={currentSettings.size ?? 1}
+          value={currentSettings.size ?? 1}
           onChange={(e) => {
             handleOnChangeSetting('size', Number(e));
           }}
@@ -127,11 +176,6 @@ const Desinger = ({ visible }: DesignerProps) => {
           </SliderTrack>
           <SliderThumb backgroundColor="black" />
         </Slider>
-      </Box>
-      <Box>
-        {workspaceJsonPath}
-        <br />
-        {JSON.stringify(desginer)}
       </Box>
     </VStack>
   );

@@ -7,6 +7,7 @@ import {
   extendTheme,
 } from '@chakra-ui/react';
 import { color } from 'framer-motion';
+import { scale } from 'sigma/utils';
 
 const fonts = { mono: `'Menlo', monospace` };
 
@@ -22,11 +23,11 @@ const theme = extendTheme({
     black: '#16161D',
     background: '#FBFCF8',
     gray: '#A0A0A0',
-    "black.alpha.80": "#16161D80",
-    "black.alpha.60": "#16161D60",
-    "black.alpha.40": "#16161D40",
-    "black.alpha.20": "#16161D20",
-    "black.alpha.10": "#16161D10",
+    'black.alpha.80': '#16161D80',
+    'black.alpha.60': '#16161D60',
+    'black.alpha.40': '#16161D40',
+    'black.alpha.20': '#16161D20',
+    'black.alpha.10': '#16161D10',
   },
   fonts,
   breakpoints,
@@ -69,6 +70,21 @@ const theme = extendTheme({
           },
         },
         submit: {
+          bg: 'black',
+          color: 'white',
+          border: 'none',
+          _hover: {
+            bg: 'black',
+            'box-shadow': 'inset 0px 2px 16px 0px rgb(209, 209, 237);',
+            color: 'white',
+          },
+          _active: {
+            bg: 'black',
+            'box-shadow': '0px 2px 16px 0px rgb(209, 209, 237);',
+            color: 'white',
+          },
+        },
+        outline: {
           bg: 'transparent',
           color: 'black',
           border: '1px solid black',

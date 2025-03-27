@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 
-interface DesginerSettings {
+export interface DesignerSettings {
   color: string;
   text: string;
   size: number;
@@ -11,8 +11,8 @@ interface WorkspaceStore {
   workspace: string;
   workspaceSqlPath?: string;
   workspaceJsonPath?: string;
-  desginer: {
-    [keys: string]: DesginerSettings;
+  designer: {
+    [keys: string]: DesignerSettings;
   };
 }
 
@@ -20,14 +20,15 @@ interface WorkspaceActions {
   setWorkspace: (workspace: string) => void;
   setWorkspaceSqlPath: (workspaceSqlPath: string) => void;
   setWorkspaceJsonPath: (workspaceJsonPath: string) => void;
-  setDesginer: (label: string, settings: DesginerSettings) => void;
+  setDesigner: (label: string, settings: DesignerSettings) => void;
+  initDesigner: (designer: { [keys: string]: DesignerSettings }) => void;
 }
 
 export type WorkspaceStoreType = WorkspaceStore & WorkspaceActions;
 
 export const defaultWorkspaceState: WorkspaceStore = {
   workspace: '',
-  desginer: {},
+  designer: {},
 };
 
 export const useWorkspaceStore = create<WorkspaceStoreType>((set) => ({
@@ -35,10 +36,16 @@ export const useWorkspaceStore = create<WorkspaceStoreType>((set) => ({
   setWorkspace: (workspace) => set({ workspace }),
   setWorkspaceSqlPath: (workspaceSqlPath) => set({ workspaceSqlPath }),
   setWorkspaceJsonPath: (workspaceJsonPath) => set({ workspaceJsonPath }),
-  setDesginer: (label, settings) =>
+  setDesigner: (label, settings) =>
     set(
       produce((state) => {
-        state.desginer[label] = settings;
+        state.designer[label] = settings;
+      }),
+    ),
+  initDesigner: (designer) =>
+    set(
+      produce((state) => {
+        state.designer = designer;
       }),
     ),
 }));

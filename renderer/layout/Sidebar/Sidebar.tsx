@@ -1,11 +1,11 @@
-import { Box, forwardRef, Flex, Icon, BoxProps } from '@chakra-ui/react';
+import { Box, forwardRef, Flex, Icon, BoxProps, theme } from '@chakra-ui/react';
 import Styles from './Sidebar.module.scss';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import SidebarRenderer from '../../components/sidebar';
 
 //icons
-import { FcHome, FcSupport, FcEditImage } from 'react-icons/fc';
+import { PiPalette, PiHouse, PiGear, PiChartScatterBold } from 'react-icons/pi';
 
 interface SidebarProps {
   x: number;
@@ -24,9 +24,11 @@ const MenuItemBox = forwardRef<
     textAlign={'center'}
     p={'25%'}
     fontSize={'x-large'}
+    color={props.active ? 'black' : 'background'}
     _hover={{
       bg: 'background',
       cursor: 'pointer',
+      color: 'black',
     }}
     {...props}
     ref={ref}
@@ -35,13 +37,23 @@ const MenuItemBox = forwardRef<
 
 export const Sidebar = ({ x }: SidebarProps) => {
   const [sidebar, setSidebar] = useState<string | number>('home');
+  const [isHide, setIsHide] = useState<boolean>(false);
   const router = useRouter();
+
+  function toggleHide(name: string | number) {
+    if (isHide) {
+      setIsHide(false);
+    }
+    if (!isHide && sidebar === name) {
+      setIsHide(true);
+    }
+  }
 
   return (
     <Box
       className={Styles.Root}
-      minW={240}
-      width={x}
+      minW={isHide ? 50 : 240}
+      width={isHide ? 50 : x}
       resize="both"
       backgroundColor={'background'}
     >
@@ -56,35 +68,45 @@ export const Sidebar = ({ x }: SidebarProps) => {
             active={sidebar === 'home'}
             onClick={() => {
               setSidebar('home');
+              toggleHide('home');
               // router.push('/home');
             }}
           >
-            <Icon as={FcHome} />
+            <Icon
+              as={PiHouse}
+              // color={sidebar === 'home' ? 'black' : 'Background'}
+            />
           </MenuItemBox>
           <MenuItemBox
             active={sidebar === 'designer'}
             onClick={() => {
               setSidebar('designer');
+              toggleHide('designer');
             }}
           >
-            <Icon as={FcEditImage} />
+            <Icon
+              as={PiPalette}
+              // color={sidebar === 'designer' ? 'black' : 'Background'}
+            />
           </MenuItemBox>
           <MenuItemBox
             active={sidebar === 3}
             onClick={() => {
               setSidebar(3);
+              toggleHide(3);
             }}
           >
-            3
+            <Icon as={PiChartScatterBold} />
           </MenuItemBox>
           <MenuItemBox
             active={sidebar === 'debug'}
             onClick={() => {
               setSidebar('debug');
+              toggleHide('debug');
               router.push('/debug');
             }}
           >
-            <Icon as={FcSupport} />
+            <Icon as={PiGear} />
           </MenuItemBox>
         </Flex>
         <Box overflowY={'auto'} width={'100%'} height={'100vh'}>

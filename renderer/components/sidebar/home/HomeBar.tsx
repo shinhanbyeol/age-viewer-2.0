@@ -6,6 +6,7 @@ import Styels from './HomeBar.module.scss';
 import {
   Button,
   Heading,
+  Icon,
   IconButton,
   Modal,
   ModalOverlay,
@@ -14,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import AddServer from '../../features/AddServer';
 import ServerList from '../../features/ServerList';
-import { FcAddDatabase } from 'react-icons/fc';
+import { PiDatabaseFill } from 'react-icons/pi';
 
 interface HomeBarProps {
   visible: boolean;
@@ -67,21 +68,26 @@ const HomeBar = ({ visible }: HomeBarProps) => {
         fontSize="medium"
         fontWeight="bold"
         display={'flex'}
+        flexDir={'column'}
         alignItems={'center'}
         justifyContent={'space-between'}
+        pt={'0.5rem'}
         pl={'1rem'}
         pr={'1rem'}
         mt={'1rem'}
+        gap={2}
       >
         <Text>Datbase Explorer</Text>
-        {/* <Button h={'1.5rem'} margin={'1rem'} leftIcon={<PiPlusSquareFill />} /> */}
-        <IconButton
+        <Button
+          size={'sm'}
+          variant={'outline'}
+          leftIcon={<Icon as={PiDatabaseFill} />}
           aria-label="Add database"
           title="Add database"
           onClick={handleModalOpen}
         >
-          <FcAddDatabase size={32} />
-        </IconButton>
+          Add Database
+        </Button>
       </Heading>
       <Modal isOpen={isOpen} onClose={() => onClose()}>
         <ModalOverlay />
