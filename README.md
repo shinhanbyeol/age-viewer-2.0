@@ -8,7 +8,7 @@ AGE is a graph database that is postgresql extension, and this viewer is a deskt
 It will be developed to support Mac OS X, Windows, and Linux.
 
 ## Preview
-![image](https://github.com/user-attachments/assets/e8e0fa1b-7a16-47b0-ae0f-0b4b3b4427b3)
+![image](https://github.com/user-attachments/assets/aefa8808-0e01-410b-b3a3-ab53789ca655)
 
 
 ## Architecture (WIP)
