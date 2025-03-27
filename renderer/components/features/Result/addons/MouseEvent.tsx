@@ -1,7 +1,11 @@
 import { useRegisterEvents, useSigma } from '@react-sigma/core';
 import { useEffect, useState } from 'react';
 
-const MouseEvent = () => {
+const MouseEvent = ({
+  setSelectedObjects,
+}: {
+  setSelectedObjects: (nodeOrEdge: string[]) => void;
+}) => {
   const sigma = useSigma();
   const registerEvents = useRegisterEvents();
   const [dragElements, setDragElements] = useState(null);
@@ -14,8 +18,12 @@ const MouseEvent = () => {
         setIsDragging(true);
       },
       upNode: (e) => {
+        setSelectedObjects([e.node]);
         setDragElements(null);
         setIsDragging(false);
+      },
+      upEdge: (e) => {
+        setSelectedObjects([e.edge]);
       },
       mouseup: (e) => {
         if (dragElements) {
@@ -37,6 +45,9 @@ const MouseEvent = () => {
           e.original.preventDefault();
           e.original.stopPropagation();
         }
+      },
+      clickStage: (e) => {
+        setSelectedObjects([]);
       },
     });
   }, [dragElements, isDragging, sigma, setDragElements, setIsDragging]);

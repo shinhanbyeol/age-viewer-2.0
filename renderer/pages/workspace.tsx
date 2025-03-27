@@ -85,13 +85,13 @@ function WorkspacePage() {
             paddingLeft={'1rem'}
           >
             <BreadcrumbItem>
-              <Text fontSize={'small'}>{serverName}</Text>
+              <Text fontSize={'sm'}>{serverName}</Text>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <Text fontSize={'small'}>{graph}</Text>
+              <Text fontSize={'sm'}>{graph}</Text>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <Text fontSize={'small'}>{workspaceName}</Text>
+              <Text fontSize={'sm'}>{workspaceName}</Text>
             </BreadcrumbItem>
           </Breadcrumb>
           <Box position={'relative'} display={'block'} flex={1}>

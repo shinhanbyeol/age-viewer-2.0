@@ -7,12 +7,10 @@ import MouseEvent from './addons/MouseEvent';
 import ExecutedEvent from './addons/ExecutedEvent';
 import Layout from './addons/Layout';
 import Control from './addons/Control';
-import {
-  useWorkspaceStore,
-  DesignerSettings,
-} from '../../../stores/workspaceStore';
+import { useWorkspaceStore } from '../../../stores/workspaceStore';
 import { entries, size } from 'lodash';
 import { color } from 'framer-motion';
+import Information from './addons/Information';
 
 const Result = ({
   workspaceName,
@@ -28,13 +26,16 @@ const Result = ({
   sessionId: string;
 }) => {
   const graphology = useGraphologyStore((state) => state.graphology);
+  const [selectedObjects, setSelectedObjects] = useState<string[]>([]);
   const { designer } = useWorkspaceStore();
 
   const lastExecutedTime = useGraphologyStore(
     (state) => state.lastExecutedTime,
   );
 
-  useEffect(() => {}, [lastExecutedTime]);
+  useEffect(() => {
+    setSelectedObjects([]);
+  }, [lastExecutedTime]);
 
   return (
     <Box
@@ -64,7 +65,7 @@ const Result = ({
                 ? attr?.properties[text]
                 : attr.label;
               const nodeStyledata = {
-                size: designer[attr.label as string]?.size * 10 || 1 * 10,
+                size: designer[attr.label as string]?.size * 16 || 1 * 16,
                 color: designer[attr.label as string]?.color || '#000',
                 label: convertedLabel,
               };
@@ -76,7 +77,7 @@ const Result = ({
                 ? attr?.properties[text]
                 : attr.label;
               const edgeStyledata = {
-                size: designer[attr.label as string]?.size * 3.25 || 1 * 3.25,
+                size: designer[attr.label as string]?.size * 4 || 1 * 4,
                 color: designer[attr.label as string]?.color || '#000',
                 label: convertedLabel,
               };
@@ -84,9 +85,15 @@ const Result = ({
             },
           }}
         >
+          <Information
+            selectedObjects={selectedObjects}
+            close={() => {
+              setSelectedObjects([]);
+            }}
+          />
           <Control />
           <Layout lastExecutedTime={lastExecutedTime} />
-          <MouseEvent />
+          <MouseEvent setSelectedObjects={setSelectedObjects} />
           <ExecutedEvent lastExecutedTime={lastExecutedTime} />
         </SigmaContainer>
       ) : (

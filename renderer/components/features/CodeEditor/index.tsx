@@ -185,6 +185,7 @@ const CodeEditor = ({
           position={'absolute'}
           top={0}
           left={0}
+          zIndex={'sticky'}
         >
           <Progress size="xs" isIndeterminate colorScheme={'black'} />
         </Box>
@@ -200,6 +201,7 @@ const CodeEditor = ({
             pb={2}
             display={'flex'}
             justifyContent={'flex-end'}
+            zIndex={'sticky'}
           >
             <Button
               variant={'submit'}
@@ -209,7 +211,12 @@ const CodeEditor = ({
                 handleRunQuery(code);
               }}
             >
-              <Box display={'flex'} alignItems={'center'} flexDir={'column'} gap={1}>
+              <Box
+                display={'flex'}
+                alignItems={'center'}
+                flexDir={'column'}
+                gap={1}
+              >
                 <Text>Run Query</Text>
                 <Text fontSize={'xs'} color={'gray'} display={'block'}>
                   {OS === 'MacIntel' ? ' (Cmd + Enter)' : ' (Ctrl + Enter)'}

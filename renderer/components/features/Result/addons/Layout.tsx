@@ -2,6 +2,7 @@ import { random, circular, circlepack } from 'graphology-layout';
 import { useGraphologyStore } from '../../../../stores';
 import { useCallback, useEffect } from 'react';
 import { Box, SelectField, Text } from '@chakra-ui/react';
+import { DEFAULT_SETTINGS } from 'sigma/settings';
 
 const SlectAbleLayout = [
   { name: 'Random', value: 'random' },
@@ -20,7 +21,6 @@ const Layout = ({ lastExecutedTime }: LayoutProps) => {
 
   const _random = useCallback(() => {
     random.assign(graphology, {
-      scale: 0.1,
       center: 0,
     });
   }, [graphology]);
