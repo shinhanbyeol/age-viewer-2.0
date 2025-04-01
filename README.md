@@ -9,7 +9,12 @@ to be continue for neo4j and other graph databases
 It will be developed to support Mac OS X, Windows, and Linux.
 
 ## Preview
-![image](https://github.com/user-attachments/assets/aefa8808-0e01-410b-b3a3-ab53789ca655)
+<img width="1468" alt="image" src="https://github.com/user-attachments/assets/858d743b-f8e0-40b5-82ac-ca0f0863d00b" />
+
+![image](https://github.com/user-attachments/assets/eae18ad3-7102-4ab2-864f-c8f857381c05)
+![image](https://github.com/user-attachments/assets/5e573a82-72a9-4df6-a069-35bcf4db258d)
+
+
 
 
 ## Architecture (WIP)
