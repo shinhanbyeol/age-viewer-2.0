@@ -1,9 +1,10 @@
-# AGE-Viewer-2.0 beta (WIP)
+# Graph Explorer Client beta (WIP)
 
 ## Introduction
 
 this project is a viewer for Apache AGE, AgensGraph
 AGE is a graph database that is postgresql extension, and this viewer is a desktop application that can be used to visualize the graph data stored in AGE.
+to be continue for neo4j and other graph databases
 
 It will be developed to support Mac OS X, Windows, and Linux.
 
