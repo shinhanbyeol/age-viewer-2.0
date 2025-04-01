@@ -1,6 +1,5 @@
 const sqls = {
   nodes: `
-  set graph_path = '%s';
   MATCH (v) RETURN DISTINCT label(v) AS label, count(v) AS cnt
   ORDER BY label;
   `,

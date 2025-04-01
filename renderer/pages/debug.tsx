@@ -11,7 +11,7 @@ export default function Debug() {
   return (
     <React.Fragment>
       <Head>
-        <title>AGE-Viewer-2.0:debugger</title>
+        <title>Graph Explorer Client</title>
       </Head>
       <Main>
         <div

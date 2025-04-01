@@ -42,7 +42,7 @@ function WorkspacePage() {
     return (
       <React.Fragment>
         <Head>
-          <title>AGE-Viewer-2.0</title>
+          <title>Graph Explorer Client</title>
         </Head>
         <Main>
           <Text fontSize={'4xl'}>Sorry!! something went wrong</Text>
@@ -75,7 +75,7 @@ function WorkspacePage() {
   return (
     <React.Fragment>
       <Head>
-        <title>AGE-Viewer-2.0</title>
+        <title>Graph Explorer Client</title>
       </Head>
       <Main>
         <Stack h={'100%'} direction={'column'}>

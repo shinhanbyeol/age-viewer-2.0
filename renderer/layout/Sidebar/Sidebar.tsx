@@ -1,11 +1,17 @@
-import { Box, forwardRef, Flex, Icon, BoxProps, theme } from '@chakra-ui/react';
+import { Box, forwardRef, Flex, Icon, BoxProps, Text } from '@chakra-ui/react';
 import Styles from './Sidebar.module.scss';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import SidebarRenderer from '../../components/sidebar';
 
 //icons
-import { PiPalette, PiHouse, PiGear, PiChartScatterBold } from 'react-icons/pi';
+import {
+  PiPalette,
+  PiHouse,
+  PiGear,
+  PiFile,
+  PiGraphThin,
+} from 'react-icons/pi';
 
 interface SidebarProps {
   x: number;
@@ -78,6 +84,15 @@ export const Sidebar = ({ x }: SidebarProps) => {
             />
           </MenuItemBox>
           <MenuItemBox
+            active={sidebar === 'cypher-tool'}
+            onClick={() => {
+              setSidebar('cypher-tool');
+              toggleHide('cypher-tool');
+            }}
+          >
+            <Icon as={PiGraphThin} />
+          </MenuItemBox>
+          <MenuItemBox
             active={sidebar === 'designer'}
             onClick={() => {
               setSidebar('designer');
@@ -88,15 +103,6 @@ export const Sidebar = ({ x }: SidebarProps) => {
               as={PiPalette}
               // color={sidebar === 'designer' ? 'black' : 'Background'}
             />
-          </MenuItemBox>
-          <MenuItemBox
-            active={sidebar === 3}
-            onClick={() => {
-              setSidebar(3);
-              toggleHide(3);
-            }}
-          >
-            <Icon as={PiChartScatterBold} />
           </MenuItemBox>
           <MenuItemBox
             active={sidebar === 'debug'}

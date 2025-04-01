@@ -5,15 +5,26 @@ import {
   ServerResponse,
 } from '../../../types';
 
-import { Accordion, ButtonSpinner } from '@chakra-ui/react';
+import {
+  Accordion,
+  Box,
+  ButtonSpinner,
+  Flex,
+  Link,
+  Text,
+} from '@chakra-ui/react';
 import { useServerOfSessionStore } from '../../../stores';
 import Graph from '../GraphItem';
 
+// icon
+import { PiPlugsLight } from 'react-icons/pi';
+
 interface props {
   server: ServerResponse;
+  onOpen: () => void;
 }
 
-const ServerPanel = ({ server }) => {
+const ServerPanel = ({ server, onOpen }: props) => {
   const { serverList, addServerSession } = useServerOfSessionStore();
   const [sessionId, setSessionId] = useState(
     serverList.find((s) => s.id === server.id)?.sessionId ?? null,
@@ -74,7 +85,16 @@ const ServerPanel = ({ server }) => {
   return (
     <>
       {isConnecting && <ButtonSpinner />}
-      {errorMessage && isError && <p>{errorMessage}</p>}
+      {errorMessage && isError && (
+        <Link onClick={onOpen}>
+          <Flex alignItems={'center'} justifyContent={'center'} gap={2}>
+            <PiPlugsLight color="red" />
+            <Text mt={1} textAlign={'center'} color={'red'} fontSize={'xs'}>
+              {errorMessage}
+            </Text>
+          </Flex>
+        </Link>
+      )}
       {/* {sessionId && <p>Session ID: {sessionId}</p>} */}
       <Accordion allowMultiple>
         {graphPaths.map((gpath, index) => (

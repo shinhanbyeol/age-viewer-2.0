@@ -92,7 +92,6 @@ const Server = ({ server }: ServerProps) => {
                     justifyContent={'space-between'}
                     leftIcon={
                       <>
-                        <PiDatabaseFill />
                         <Text ml={2}>{server.name}</Text>
                       </>
                     }
@@ -105,7 +104,7 @@ const Server = ({ server }: ServerProps) => {
             </ContextMenu>
             {isExpanded && (
               <AccordionPanel p={0}>
-                <ServerPanel server={server} />
+                <ServerPanel server={server} onOpen={onOpen}/>
               </AccordionPanel>
             )}
           </>

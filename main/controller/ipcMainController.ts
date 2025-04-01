@@ -334,6 +334,15 @@ class IpcMainController {
             version,
           );
 
+          if (session.sessionId === null) {
+            return {
+              success: false,
+              error: true,
+              message: 'Connection failed',
+              stack: null,
+            };
+          }
+
           // return session;
           return {
             success: true,

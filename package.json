@@ -1,7 +1,7 @@
 {
   "private": true,
-  "name": "age-viewer-2.0",
-  "description": "AGE Viewer 2.0",
+  "name": "Graph Explorer Client",
+  "description": "Graph Explorer Client",
   "version": "1.0.0",
   "author": "Hanbyeol Shin <sinhanbyeol@gmail.com>",
   "main": "app/background.js",

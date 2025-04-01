@@ -77,7 +77,7 @@ const HomeBar = ({ visible }: HomeBarProps) => {
         mt={'1rem'}
         gap={2}
       >
-        <Text>Datbase Explorer</Text>
+        <Text fontWeight={'bold'} fontSize={'lg'}>Database Explorer</Text>
         <Button
           size={'sm'}
           variant={'outline'}

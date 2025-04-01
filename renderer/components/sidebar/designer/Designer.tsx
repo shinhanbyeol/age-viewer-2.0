@@ -114,9 +114,11 @@ const Desinger = ({ visible }: DesignerProps) => {
       h={'100%'}
       direction={['column']}
       spacing={'2rem'}
-      divider={<Divider color="black.alpha.80" />}
+      divider={<Divider color="black" />}
     >
-      <Text fontWeight="bold">Graph Designer</Text>
+      <Text fontWeight="bold" fontSize={'lg'} textAlign={'center'}>
+        Graph Designer
+      </Text>
       <Box>
         <FormLabel>Labels</FormLabel>
         <Select
