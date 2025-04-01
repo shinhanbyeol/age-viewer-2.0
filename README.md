@@ -27,7 +27,7 @@ It will be developed to support Mac OS X, Windows, and Linux.
 ## Recomend develop Environment
   
 1. node js version 18.x.x and later
-2. python verson 3.10 (only 3.10 allowd)
+2. python verson 3.1x
 3. "AgensGraph" or "Apache AGE" (postgresql graph database extension)
 
 ## How to run
