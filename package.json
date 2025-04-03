@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "Graph Explorer Client",
+  "name": "graph-explorer-client",
   "description": "Graph Explorer Client",
   "version": "1.0.0",
   "author": "Hanbyeol Shin <sinhanbyeol@gmail.com>",
